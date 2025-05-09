@@ -1,8 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
-import { login as authLogin, logout as authLogout, isAuthenticated } from "@/lib/auth";
-import api from "@/config/axios";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -10,39 +9,47 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Hàm lấy thông tin user
-  const fetchUserInfo = async () => {
-    try {
-      const { data } = await api.get("/api/auth/me");
-      setUser(data);
-      console.log('data user: ', data)
-    } catch (error) {
-      console.error("Error fetching user info:", error);
-      setUser(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Kiểm tra và lấy thông tin user khi component mount
   useEffect(() => {
-    if (isAuthenticated()) {
-      fetchUserInfo();
-    } else {
-      setLoading(false);
-    }
-  }, []);
+    const fetchUser = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setLoading(false);
+        return;
+      }
 
+      try {
+        const response = await axios.get("/api/auth/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        setUser(response.data);
+        console.log("response.data setUser: ", response.data);
+      } catch (error) {
+        logout();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
   // Hàm đăng nhập
   const login = async (credentials) => {
-    const data = await authLogin(credentials);
-    await fetchUserInfo(); // Lấy thông tin user sau khi đăng nhập
-    return data;
+    try {
+      const response = await axios.post("/api/auth/login", credentials);
+      if (response.status == 200) {
+        const { token, user } = response.data;
+        localStorage.setItem("token", token);
+        setUser(user);
+      }
+    } catch (error) {
+      console.log("error login: >>>>>", error);
+    }
   };
 
   // Hàm đăng xuất
   const logout = () => {
-    authLogout();
+    localStorage.removeItem("token");
     setUser(null);
   };
 
@@ -51,7 +58,6 @@ export function AuthProvider({ children }) {
     loading,
     login,
     logout,
-    fetchUserInfo,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import LoadingProfile from "@/components/loading/LoadingProfile";
 import MenuProfile from "@/components/menu/MenuProfile";
+import { formatDate } from "@/utils";
 
 const MotionBox = motion.create(Box);
 const MotionCard = motion.create(Card);
@@ -33,6 +34,8 @@ export default function ProfilePage() {
   const router = useRouter();
 
   useEffect(() => {
+  console.log('userData', userData)
+
     if (!loading && !userData) {
       router.push("/");
     }
@@ -43,17 +46,6 @@ export default function ProfilePage() {
   const textColor = useColorModeValue("gray.600", "gray.300");
   const headingColor = useColorModeValue("gray.700", "white");
   const iconColor = useColorModeValue("blue.500", "blue.300");
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("vi-VN", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   if (loading) {
     return (
@@ -149,7 +141,7 @@ export default function ProfilePage() {
                     Money
                   </Text>
                   <Heading size="lg" color={headingColor}>
-                    {userData?.money.toLocaleString()}đ
+                    {userData?.money?.toLocaleString()}đ
                   </Heading>
                 </VStack>
               </CardBody>
@@ -171,7 +163,7 @@ export default function ProfilePage() {
                     Tổng nạp
                   </Text>
                   <Heading size="lg" color={headingColor}>
-                    {userData?.tongnap.toLocaleString()}đ
+                    {userData?.tongnap?.toLocaleString()}đ
                   </Heading>
                 </VStack>
               </CardBody>
@@ -193,7 +185,7 @@ export default function ProfilePage() {
                     Nạp tuần
                   </Text>
                   <Heading size="lg" color={headingColor}>
-                    {userData?.naptuan.toLocaleString()}đ
+                    {userData?.naptuan?.toLocaleString()}đ
                   </Heading>
                 </VStack>
               </CardBody>

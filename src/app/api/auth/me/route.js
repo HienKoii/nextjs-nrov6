@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { getUserById } from "@/services/accountService";
 
-
 export async function GET(req) {
   try {
     const authHeader = req.headers.get("authorization");
+    console.log("Auth header:", authHeader);
     if (!authHeader) return NextResponse.json({ message: "Không có token" }, { status: 401 });
 
     const token = authHeader.split(" ")[1];
@@ -17,6 +17,7 @@ export async function GET(req) {
 
     return NextResponse.json(userData, { status: 200 });
   } catch (error) {
+    console.error("Token verification error:", error);
     return NextResponse.json({ message: "Token không hợp lệ" }, { status: 401 });
   }
 }

@@ -72,7 +72,13 @@ export default function LoginPage() {
   };
 
   return (
-    <MotionVStack spacing={8} align="stretch" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+    <MotionVStack
+      spacing={8}
+      align="stretch" //
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <Box textAlign="center">
         <Heading size="lg" mb={2}>
           Đăng nhập
@@ -80,7 +86,14 @@ export default function LoginPage() {
         <Text color={colorMode === "light" ? "gray.600" : "gray.400"}>Vui lòng đăng nhập để tiếp tục</Text>
       </Box>
 
-      <MotionVStack spacing={4} as="form" onSubmit={handleSubmit} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.2 }}>
+      <MotionVStack
+        spacing={4}
+        as="form"
+        onSubmit={handleSubmit} //
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
         <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }}>
           <FormLabel>Tài khoản</FormLabel>
           <Input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Nhập tài khoản của bạn" size="lg" />
@@ -117,8 +130,15 @@ export default function LoginPage() {
         </MotionLink>
 
         <Text fontSize="sm" textAlign="center">
-          Bạn chưa có tài khoản?{" "}
-          <MotionLink as={NextLink} href="/register" color="blue.500" fontWeight="bold" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
+          Bạn chưa có tài khoản?
+          <MotionLink
+            as={NextLink}
+            href="/register"
+            color="blue.500"
+            fontWeight="bold"
+            whileHover={{ scale: 1.05 }} //
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          >
             Đăng ký ngay
           </MotionLink>
         </Text>

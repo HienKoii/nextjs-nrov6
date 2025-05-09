@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Heading, Text, SimpleGrid, Image, VStack, useColorMode, Button, HStack } from "@chakra-ui/react";
+import { Box, Container, Heading, Text, SimpleGrid, Image, VStack, useColorMode, Button, HStack, Spinner } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -15,7 +15,7 @@ const fadeInUp = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function NewsSection() {
+export default function NewsPage() {
   const { colorMode } = useColorMode();
   const [currentPage, setCurrentPage] = useState(1);
   const [news, setNews] = useState([]);
@@ -24,6 +24,8 @@ export default function NewsSection() {
   const [pagination, setPagination] = useState({
     total: 0,
     totalPages: 0,
+    page: 1,
+    limit: 10,
   });
 
   useEffect(() => {
@@ -32,15 +34,12 @@ export default function NewsSection() {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(`/api/news?page=${currentPage}&limit=4`);
+        const response = await axios.get(`/api/news?page=${currentPage}&limit=10`);
         console.log("API Response:", response.data);
 
         if (response.data) {
           setNews(response.data.news);
-          setPagination({
-            total: response.data.pagination.total,
-            totalPages: response.data.pagination.totalPages,
-          });
+          setPagination(response.data.pagination);
         }
       } catch (err) {
         console.error("Error details:", err.response?.data || err.message);
@@ -51,7 +50,7 @@ export default function NewsSection() {
     };
 
     fetchNews();
-  }, [currentPage]); // Thêm currentPage vào dependency array
+  }, [currentPage]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -60,26 +59,33 @@ export default function NewsSection() {
 
   if (loading) {
     return (
-      <Box mb={12} textAlign="center">
-        <Text>Đang tải tin tức...</Text>
-      </Box>
+      <Container maxW="container.xl" py={8}>
+        <VStack spacing={4} align="center" justify="center" minH="50vh">
+          <Spinner size="xl" color="blue.500" />
+          <Text>Đang tải tin tức...</Text>
+        </VStack>
+      </Container>
     );
   }
 
   if (error) {
     return (
-      <Box mb={12} textAlign="center">
-        <Text color="red.500">{error}</Text>
-      </Box>
+      <Container maxW="container.xl" py={8}>
+        <VStack spacing={4} align="center" justify="center" minH="50vh">
+          <Text color="red.500">{error}</Text>
+          <Button onClick={() => window.location.reload()}>Thử lại</Button>
+        </VStack>
+      </Container>
     );
   }
 
   return (
-    <Box mb={12}>
-      <MotionHeading size="lg" mb={6} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-        Tin tức mới nhất
+    <Container maxW="container.xl" py={8}>
+      <MotionHeading size="xl" mb={8} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+        Tin tức
       </MotionHeading>
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
         {news.map((item) => (
           <Link href={`/news/${item.id}`} key={item.id} style={{ textDecoration: "none" }}>
             <MotionBox
@@ -100,43 +106,35 @@ export default function NewsSection() {
               <VStack align="start" spacing={3}>
                 <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} style={{ width: "100%" }}>
                   <Box w="100%" h="200px" overflow="hidden" borderRadius="md">
-                    <Image
-                      src={getFirstImage(item.images)} //
-                      alt={item.title}
-                      width="100%"
-                      height="100%"
-                      objectFit="cover"
-                      borderRadius="md"
-                    />
+                    <Image src={getFirstImage(item.images)} alt={item.title} width="100%" height="100%" objectFit="cover" borderRadius="md" />
                   </Box>
                 </motion.div>
                 <Heading size="md">{item.title}</Heading>
                 <Text color={colorMode === "light" ? "gray.600" : "gray.300"}>{item.content?.substring(0, 100)}...</Text>
+                <Text fontSize="sm" color="gray.500">
+                  {new Date(item.created_at).toLocaleDateString("vi-VN")}
+                </Text>
               </VStack>
             </MotionBox>
           </Link>
         ))}
       </SimpleGrid>
 
-      <VStack spacing={4} mt={8}>
-        <Link href="/news">Xem tất cả tin tức</Link>
-
-        {pagination.totalPages > 1 && (
-          <HStack spacing={2} justify="center" w="full">
-            <Button onClick={() => handlePageChange(currentPage - 1)} isDisabled={currentPage === 1} colorScheme="blue" variant="outline">
-              Trước
+      {pagination.totalPages > 1 && (
+        <HStack spacing={2} justify="center" mt={8}>
+          <Button onClick={() => handlePageChange(currentPage - 1)} isDisabled={currentPage === 1} colorScheme="blue" variant="outline">
+            Trước
+          </Button>
+          {[...Array(pagination.totalPages)].map((_, index) => (
+            <Button key={index} onClick={() => handlePageChange(index + 1)} colorScheme={currentPage === index + 1 ? "blue" : "gray"} variant={currentPage === index + 1 ? "solid" : "outline"}>
+              {index + 1}
             </Button>
-            {[...Array(pagination.totalPages)].map((_, index) => (
-              <Button key={index} onClick={() => handlePageChange(index + 1)} colorScheme={currentPage === index + 1 ? "blue" : "gray"} variant={currentPage === index + 1 ? "solid" : "outline"}>
-                {index + 1}
-              </Button>
-            ))}
-            <Button onClick={() => handlePageChange(currentPage + 1)} isDisabled={currentPage === pagination.totalPages} colorScheme="blue" variant="outline">
-              Sau
-            </Button>
-          </HStack>
-        )}
-      </VStack>
-    </Box>
+          ))}
+          <Button onClick={() => handlePageChange(currentPage + 1)} isDisabled={currentPage === pagination.totalPages} colorScheme="blue" variant="outline">
+            Sau
+          </Button>
+        </HStack>
+      )}
+    </Container>
   );
 }

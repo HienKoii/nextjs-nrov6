@@ -1,11 +1,17 @@
 import { Box, Button, VStack, HStack, Text, Icon, useColorModeValue } from "@chakra-ui/react";
-import { FaKey, FaHistory } from "react-icons/fa";
+import { FaKey, FaHistory, FaMoneyBill } from "react-icons/fa";
 
 export default function MenuProfile() {
   const borderColor = useColorModeValue("gray.200", "gray.700");
   const hoverBg = useColorModeValue("gray.50", "gray.700");
 
   const menuItems = [
+    {
+      icon: FaMoneyBill,
+      label: "Nạp tiền",
+      color: "blue",
+      onClick: () => {},
+    },
     {
       icon: FaKey,
       label: "Đổi mật khẩu",

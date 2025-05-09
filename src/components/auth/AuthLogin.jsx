@@ -6,13 +6,19 @@ import AvatarImage from "../images/AvatarImage";
 
 export default function AuthLogin() {
   const { user, loading } = useAuth();
+  console.log("user", user);
   const badgeBg = useColorModeValue("gray.200", "gray.700");
   const badgeColor = useColorModeValue("gray.600", "gray.300");
 
   if (loading) {
     return (
       <Flex alignItems="center" gap={4}>
-        <Skeleton startColor={useColorModeValue("gray.200", "gray.600")} endColor={useColorModeValue("gray.300", "gray.500")} borderRadius="full" boxSize={{ base: "8", md: "10" }} />
+        <Skeleton
+          startColor={useColorModeValue("gray.200", "gray.600")}
+          endColor={useColorModeValue("gray.300", "gray.500")} //
+          borderRadius="full"
+          boxSize={{ base: "8", md: "10" }}
+        />
       </Flex>
     );
   }

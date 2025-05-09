@@ -14,13 +14,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <AuthProvider>
+        <AuthProvider>
+          <Providers>
             <Header />
             <MainLayout>{children}</MainLayout>
             <Footer />
-          </AuthProvider>
-        </Providers>
+          </Providers>
+        </AuthProvider>
       </body>
     </html>
   );
