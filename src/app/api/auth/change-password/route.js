@@ -1,7 +1,8 @@
 import db from "@/config/db";
-import { isValid } from "@/lib/utils";
+
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { isValid } from "@/utils";
 
 export async function POST(req) {
   const authHeader = req.headers.get("authorization");
