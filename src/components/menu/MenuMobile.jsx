@@ -2,7 +2,7 @@
 
 import { IconButton, Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure, VStack, useColorMode } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import Navigation from "../Navigation";
+import Navigation from "../nav/Navigation";
 import Footer from "@/layouts/Footer";
 
 export function MenuMobile() {

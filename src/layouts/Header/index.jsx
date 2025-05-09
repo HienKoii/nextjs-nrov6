@@ -1,52 +1,40 @@
 "use client";
 
-import { Box, Flex, Container, useColorMode } from "@chakra-ui/react";
-import Logo from "@/components/Logo";
-import Navigation from "@/components/Navigation";
+import { Box, Flex, useColorMode } from "@chakra-ui/react";
+
+import { useAuth } from "@/contexts/AuthContext";
 import AuthButtons from "@/components/auth/AuthButtons";
-import { MenuMobile } from "@/components/menu/MenuMobile";
 import AuthLogin from "@/components/auth/AuthLogin";
+import { MenuMobile } from "@/components/menu/MenuMobile";
+import Navigation from "@/components/nav/Navigation";
+import Logo from "@/components/logo";
 import { ThemeToggle } from "@/components/buttons/ThemeToggle";
 
 export default function Header() {
   const { colorMode } = useColorMode();
+  const { user, loading } = useAuth();
 
   return (
     <Box
       as="header"
-      position="fixed" //
-      top={0}
-      left={0}
-      right={0}
-      bg={colorMode === "dark" ? "gray.900" : "white"}
+      position="fixed"
+      w="100%" //
+      bg={colorMode === "light" ? "white" : "gray.800"}
       boxShadow="sm"
       zIndex={1000}
-      px={8}
     >
-      <Box>
-        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Flex alignItems="center" gap={4}>
-            <Box display={{ base: "block", md: "none" }}>
-              <MenuMobile />
-            </Box>
-            <Box display={{ base: "none", md: "block" }}>
-              <Logo />
-            </Box>
-          </Flex>
+      <Flex h={16} alignItems="center" justifyContent="space-between" px={4}>
+        <MenuMobile />
 
-          <Box display={{ base: "block", md: "none" }} textAlign="center">
-            <Logo />
-          </Box>
-          <Box display={{ base: "none", md: "block" }} textAlign="center">
-            <Navigation />
-          </Box>
-          <Flex gap={2}>
-            {/* <AuthLogin /> */}
-            <AuthButtons />
-            <ThemeToggle />
-          </Flex>
+        <Logo />
+
+        <Navigation />
+
+        <Flex alignItems="center" gap={1}>
+          {!loading && <>{user ? <AuthLogin /> : <AuthButtons />}</>}
+          <ThemeToggle />
         </Flex>
-      </Box>
+      </Flex>
     </Box>
   );
 }

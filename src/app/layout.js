@@ -3,6 +3,7 @@ import { Providers } from "./providers";
 import Header from "@/layouts/Header";
 import MainLayout from "./main";
 import Footer from "@/layouts/Footer";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,9 +15,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <Providers>
-          <Header />
-          <MainLayout>{children}</MainLayout>
-          <Footer />
+          <AuthProvider>
+            <Header />
+            <MainLayout>{children}</MainLayout>
+            <Footer />
+          </AuthProvider>
         </Providers>
       </body>
     </html>

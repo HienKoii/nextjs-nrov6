@@ -1,9 +1,11 @@
 "use client";
 
-import { Box, Container, FormControl, FormLabel, Input, Button, VStack, Text, Link, useColorMode, Heading, FormErrorMessage } from "@chakra-ui/react";
+import { Box, Container, FormControl, FormLabel, Input, Button, VStack, Text, Link, useColorMode, Heading, FormErrorMessage, useToast } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { register } from "@/lib/auth";
 
 const MotionVStack = motion(VStack);
 const MotionFormControl = motion(FormControl);
@@ -12,25 +14,68 @@ const MotionLink = motion(Link);
 
 export default function RegisterPage() {
   const { colorMode } = useColorMode();
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const router = useRouter();
+  const toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    if (confirmPassword && e.target.value !== confirmPassword) {
-      setPasswordError("Mật khẩu không khớp");
-    } else {
-      setPasswordError("");
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    if (password !== e.target.value) {
-      setPasswordError("Mật khẩu không khớp");
-    } else {
-      setPasswordError("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await register({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+      });
+
+      toast({
+        title: "Đăng ký thành công",
+        description: response.message,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+
+      router.push("/login");
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "Đăng ký thất bại";
+      const status = error.response?.status;
+
+      // Xử lý các trường hợp lỗi cụ thể
+      let title = "Lỗi đăng ký";
+      if (status === 409) {
+        title = "Tài khoản đã tồn tại";
+      } else if (status === 400) {
+        title = "Dữ liệu không hợp lệ";
+      }
+
+      toast({
+        title: title,
+        description: errorMessage,
+        status: "error",
+        duration: 3000,
+        position: "top-right",
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -43,29 +88,38 @@ export default function RegisterPage() {
         <Text color={colorMode === "light" ? "gray.600" : "gray.400"}>Vui lòng điền thông tin để tạo tài khoản mới</Text>
       </Box>
 
-      <MotionVStack spacing={4} as="form" initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.2 }}>
+      <MotionVStack spacing={4} as="form" onSubmit={handleSubmit} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.2 }}>
         <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }}>
           <FormLabel>Tài khoản</FormLabel>
-          <Input type="text" placeholder="Nhập tên tài khoản" size="lg" />
+          <Input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Nhập tên tài khoản" size="lg" maxLength={20} />
         </MotionFormControl>
 
         <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.4 }}>
           <FormLabel>Email</FormLabel>
-          <Input type="email" placeholder="Nhập email của bạn" size="lg" />
+          <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Nhập email của bạn" size="lg" />
         </MotionFormControl>
 
-        <MotionFormControl isRequired isInvalid={!!passwordError} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.5 }}>
+        <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.5 }}>
           <FormLabel>Mật khẩu</FormLabel>
-          <Input type="password" placeholder="Nhập mật khẩu" size="lg" value={password} onChange={handlePasswordChange} />
+          <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Nhập mật khẩu" size="lg" maxLength={20} />
         </MotionFormControl>
 
-        <MotionFormControl isRequired isInvalid={!!passwordError} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.6 }}>
+        <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.6 }}>
           <FormLabel>Nhập lại mật khẩu</FormLabel>
-          <Input type="password" placeholder="Nhập lại mật khẩu" size="lg" value={confirmPassword} onChange={handleConfirmPasswordChange} />
-          {passwordError && <FormErrorMessage>{passwordError}</FormErrorMessage>}
+          <Input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Nhập lại mật khẩu" size="lg" maxLength={20} />
         </MotionFormControl>
 
-        <MotionButton colorScheme="blue" size="lg" width="full" mt={4} isDisabled={!!passwordError} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
+        <MotionButton
+          type="submit"
+          colorScheme="blue"
+          size="lg"
+          width="full"
+          mt={4}
+          isLoading={isLoading}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+        >
           Đăng ký
         </MotionButton>
 
