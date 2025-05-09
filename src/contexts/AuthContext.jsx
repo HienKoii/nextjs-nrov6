@@ -53,11 +53,21 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const register = async (credentials) => {
+    try {
+      const response = await axios.post("/api/auth/register", credentials);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  };
+
   const value = {
     user,
     loading,
     login,
     logout,
+    register,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

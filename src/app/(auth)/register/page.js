@@ -1,12 +1,12 @@
 "use client";
 
-import { Box, Container, FormControl, FormLabel, Input, Button, VStack, Text, Link, useColorMode, Heading, FormErrorMessage, useToast } from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, Input, Button, VStack, Text, Link, useColorMode, Heading, FormErrorMessage, useToast } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { register } from "@/lib/auth";
 import { useAuth } from "@/contexts/AuthContext";
+import axios from "axios";
 
 const MotionVStack = motion(VStack);
 const MotionFormControl = motion(FormControl);
@@ -17,7 +17,7 @@ export default function RegisterPage() {
   const { colorMode } = useColorMode();
   const router = useRouter();
   const toast = useToast();
-  const { user } = useAuth();
+  const { user, register } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   // Chuyển hướng nếu đã đăng nhập
@@ -47,37 +47,23 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const response = await register({
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-        confirmPassword: formData.confirmPassword,
-      });
+      const response = await axios.post("/api/auth/register", formData);
 
-      toast({
-        title: "Đăng ký thành công",
-        description: response.message,
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
-      });
-
-      router.push("/login");
+      if (response.status === 200) {
+        toast({
+          title: "Đăng ký thành công",
+          description: response.message,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+        router.push("/login");
+      }
     } catch (error) {
       const errorMessage = error.response?.data?.message || "Đăng ký thất bại";
-      const status = error.response?.status;
-
-      // Xử lý các trường hợp lỗi cụ thể
-      let title = "Lỗi đăng ký";
-      if (status === 409) {
-        title = "Tài khoản đã tồn tại";
-      } else if (status === 400) {
-        title = "Dữ liệu không hợp lệ";
-      }
-
       toast({
-        title: title,
+        title: "Lỗi",
         description: errorMessage,
         status: "error",
         duration: 3000,
