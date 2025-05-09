@@ -20,7 +20,7 @@ const downloadOptions = [
   {
     title: "iOS (iPhone/iPad)",
     desc: "Dành cho iPhone, iPad (file ipa)",
-    btn: { label: "App Store", href: "#appstore" },
+    btn: { label: "Tải file IPA", href: "#appstore" },
     color: "gray.700",
     icon: StarIcon,
   },

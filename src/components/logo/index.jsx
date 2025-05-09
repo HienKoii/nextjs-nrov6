@@ -4,7 +4,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-const MotionText = motion(Text);
+const MotionText = motion.create(Text);
 
 export default function Logo() {
   return (

@@ -2,10 +2,11 @@
 
 import { Box, Container, FormControl, FormLabel, Input, Button, VStack, Text, Link, useColorMode, Heading, FormErrorMessage, useToast } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { register } from "@/lib/auth";
+import { useAuth } from "@/contexts/AuthContext";
 
 const MotionVStack = motion(VStack);
 const MotionFormControl = motion(FormControl);
@@ -16,7 +17,16 @@ export default function RegisterPage() {
   const { colorMode } = useColorMode();
   const router = useRouter();
   const toast = useToast();
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+
+  // Chuyển hướng nếu đã đăng nhập
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, router]);
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",

@@ -2,15 +2,15 @@ import axios from "axios";
 
 // Tạo instance axios với config mặc định
 const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Thêm interceptor để xử lý request
+// Thêm interceptor để tự động thêm token vào header
 api.interceptors.request.use(
   (config) => {
-    // Lấy token từ localStorage
     const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

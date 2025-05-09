@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { login as authLogin, logout as authLogout, isAuthenticated } from "@/lib/auth";
-import api from "@/lib/axios";
+import api from "@/config/axios";
 
 const AuthContext = createContext();
 
@@ -15,6 +15,7 @@ export function AuthProvider({ children }) {
     try {
       const { data } = await api.get("/api/auth/me");
       setUser(data);
+      console.log('data user: ', data)
     } catch (error) {
       console.error("Error fetching user info:", error);
       setUser(null);

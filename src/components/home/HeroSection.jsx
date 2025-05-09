@@ -4,10 +4,10 @@ import { VStack, Heading, Text, Button, useColorMode } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-const MotionVStack = motion(VStack);
-const MotionHeading = motion(Heading);
-const MotionText = motion(Text);
-const MotionButton = motion(Button);
+const MotionVStack = motion.create(VStack);
+const MotionHeading = motion.create(Heading);
+const MotionText = motion.create(Text);
+const MotionButton = motion.create(Button);
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -73,11 +73,20 @@ export default function HeroSection() {
         variants={fadeInUp}
         position="relative"
         zIndex={1}
+        maxW={"250px"}
       >
         Khám phá thế giới Dragon Ball đầy thú vị
       </MotionText>
       <Link href="/download" passHref>
-        <MotionButton size="lg" colorScheme="purple" variants={fadeInUp} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} position="relative" zIndex={1}>
+        <MotionButton
+          size="lg" //
+          colorScheme="purple"
+          variants={fadeInUp}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          position="relative"
+          zIndex={1}
+        >
           Tải game ngay
         </MotionButton>
       </Link>

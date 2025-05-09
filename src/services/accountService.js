@@ -1,17 +1,52 @@
 import db from "@/config/db";
 import { createHistory } from "./historyService";
-export async function getUserById(userId) {
+
+// Lấy thông tin user từ bảng users
+async function getUserFromUsers(userId) {
   const [user] = await db.query("SELECT * FROM users WHERE id = ?", [userId]);
-  if (!user || user.length === 0) return null;
+  return user?.[0] || null;
+}
 
-  const [pl] = await db.query("SELECT * FROM player WHERE playerId = ?", [user[0].id]);
+// Lấy thông tin player từ bảng player
+async function getPlayerInfo(userId) {
+  const [pl] = await db.query("SELECT * FROM player WHERE playerId = ?", [userId]);
+  return pl?.[0] || null;
+}
 
-  return {
-    ...user[0],
-    password: "đã che ^^",
-    name: pl[0]?.name || null,
-    gender: pl[0]?.gender || null,
-  };
+// Lấy thông tin avatar từ bảng avatar
+async function getAvatarInfo(headId) {
+  if (!headId) return null;
+
+  const [avatar] = await db.query("SELECT idAvatar FROM head WHERE idHead = ?", [headId]);
+  return avatar?.[0]?.idAvatar || null;
+}
+
+// Hàm chính để lấy thông tin user
+export async function getUserById(userId) {
+  try {
+    // Lấy thông tin cơ bản của user
+    const user = await getUserFromUsers(userId);
+    if (!user) return null;
+
+    // Lấy thông tin player
+    const player = await getPlayerInfo(user.id);
+
+    // Lấy thông tin avatar nếu có
+    const idAvatar = await getAvatarInfo(player?.head);
+
+    // Trả về object kết hợp thông tin
+    return {
+      ...user,
+      password: "đã che ^^",
+      cName: player?.cName || null,
+      gender: player?.cgender || null,
+      head: player?.head || null,
+      avatar: idAvatar,
+    };
+  } catch (error) {
+    console.error("Lỗi khi lấy thông tin user:", error);
+    throw error;
+  }
 }
 
 export async function getAllUsers(page = 1, limit = 10) {

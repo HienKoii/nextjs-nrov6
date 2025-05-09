@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Flex, useColorMode } from "@chakra-ui/react";
+import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
 
 import { useAuth } from "@/contexts/AuthContext";
 import AuthButtons from "@/components/auth/AuthButtons";
@@ -11,17 +11,21 @@ import Logo from "@/components/logo";
 import { ThemeToggle } from "@/components/buttons/ThemeToggle";
 
 export default function Header() {
-  const { colorMode } = useColorMode();
   const { user, loading } = useAuth();
+  const bg = useColorModeValue("gray.50", "gray.900");
+  const borderColor = useColorModeValue("gray.200", "gray.700");
 
   return (
     <Box
       as="header"
       position="fixed"
-      w="100%" //
-      bg={colorMode === "light" ? "white" : "gray.800"}
-      boxShadow="sm"
+      w="100%"
+      bg={bg} //
+      boxShadow="md"
+      borderBottom="1px solid"
+      borderColor={borderColor}
       zIndex={1000}
+      suppressHydrationWarning
     >
       <Flex h={16} alignItems="center" justifyContent="space-between" px={4}>
         <MenuMobile />

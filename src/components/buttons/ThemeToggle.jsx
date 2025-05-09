@@ -4,7 +4,7 @@ import { useColorMode, IconButton } from "@chakra-ui/react";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { motion } from "framer-motion";
 
-const MotionIconButton = motion(IconButton);
+const MotionIconButton = motion.create(IconButton);
 
 export function ThemeToggle() {
   const { colorMode, toggleColorMode } = useColorMode();

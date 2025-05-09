@@ -1,41 +1,41 @@
-"use client";
-
-import { Menu, MenuButton, Button, Avatar, Flex, Box, Badge, useColorMode } from "@chakra-ui/react";
+import { Menu, MenuButton, Button, Flex, Box, Badge, Skeleton, useColorModeValue } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useAuth } from "@/contexts/AuthContext";
 import MenuUser from "../menu/MenuUser";
+import AvatarImage from "../images/AvatarImage";
 
 export default function AuthLogin() {
-  const { colorMode } = useColorMode();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  const badgeBg = useColorModeValue("gray.200", "gray.700");
+  const badgeColor = useColorModeValue("gray.600", "gray.300");
+
+  if (loading) {
+    return (
+      <Flex alignItems="center" gap={4}>
+        <Skeleton startColor={useColorModeValue("gray.200", "gray.600")} endColor={useColorModeValue("gray.300", "gray.500")} borderRadius="full" boxSize={{ base: "8", md: "10" }} />
+      </Flex>
+    );
+  }
 
   return (
     <Flex alignItems="center" gap={4}>
       <Menu>
-        <MenuButton
-          as={Button}
-          variant="ghost"
-          size={{ base: "sm", md: "md" }}
-          p={0}
-          position="relative"
-          _hover={{ bg: colorMode === "light" ? "gray.100" : "gray.700" }}
-          _active={{ bg: colorMode === "light" ? "gray.200" : "gray.600" }}
-        >
+        <MenuButton as={Button} variant="ghost" size={{ base: "sm", md: "md" }} p={0} position="relative" _hover={{}} _active={{}}>
           <Box>
-            <Avatar size="sm" name={user?.username || "User Name"} src={user?.avatar || "https://bit.ly/broken-link"} border="2px solid" borderColor={colorMode === "light" ? "gray.200" : "gray.600"} />
+            <AvatarImage id={user?.avatar} />
             <Badge
               position="absolute"
-              bottom={{ base: "0", md: "1" }}
-              left={{ base: "65%", md: "61%" }}
+              bottom={{ base: "-1", md: "0" }}
+              left={{ base: "73%", md: "70%" }}
               transform="translateX(-50%)"
-              bg={colorMode === "light" ? "gray.200" : "gray.700"}
+              bg={badgeBg}
               borderRadius="full"
               p="1px"
               display="flex"
               alignItems="center"
               justifyContent="center"
             >
-              <ChevronDownIcon boxSize={3} color={colorMode === "light" ? "gray.600" : "gray.300"} />
+              <ChevronDownIcon boxSize={3} color={badgeColor} />
             </Badge>
           </Box>
         </MenuButton>

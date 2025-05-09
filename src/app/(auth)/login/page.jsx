@@ -3,7 +3,7 @@
 import { Box, FormControl, FormLabel, Input, Button, VStack, Text, Link, useColorMode, Heading, useToast } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -16,7 +16,14 @@ export default function LoginPage() {
   const { colorMode } = useColorMode();
   const router = useRouter();
   const toast = useToast();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+
+  // Chuyển hướng nếu đã đăng nhập
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, router]);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -98,7 +105,14 @@ export default function LoginPage() {
           Đăng nhập
         </MotionButton>
 
-        <MotionLink as={NextLink} href="/forgot-password" color="blue.500" fontSize="sm" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
+        <MotionLink
+          as={NextLink}
+          href="/forgot-password" //
+          color="blue.500"
+          fontSize="sm"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+        >
           Quên mật khẩu?
         </MotionLink>
 
