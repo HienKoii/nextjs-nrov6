@@ -8,6 +8,7 @@ const SECRET_KEY = process.env.JWT_SECRET || "";
 export async function POST(request) {
   try {
     const { username, password } = await request.json();
+    
     if (!username || !password) {
       return NextResponse.json({ message: "Vui lòng nhập username và password." }, { status: 400 });
     }

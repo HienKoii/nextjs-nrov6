@@ -32,8 +32,7 @@ export default function NewsSection() {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(`/api/news?page=${currentPage}&limit=4`);
-        console.log("API Response:", response.data);
+        const response = await axios.get(`/api/${process.env.NEXT_PUBLIC_API_PREFIX}/news?page=${currentPage}&limit=4`);
 
         if (response.data) {
           setNews(response.data.news);
@@ -98,7 +97,11 @@ export default function NewsSection() {
               cursor="pointer"
             >
               <VStack align="start" spacing={3}>
-                <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} style={{ width: "100%" }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }} //
+                  transition={{ duration: 0.2 }}
+                  style={{ width: "100%" }}
+                >
                   <Box w="100%" h="200px" overflow="hidden" borderRadius="md">
                     <Image
                       src={getFirstImage(item.images)} //
@@ -110,7 +113,13 @@ export default function NewsSection() {
                     />
                   </Box>
                 </motion.div>
-                <Heading size="md">{item.title}</Heading>
+                <Heading size="md">
+                  <HStack as="span" spacing={1} align="center" minH={"48px"}>
+                    <span>{item.title}</span>
+                    {item.isHot && <Image src="/images/hot.gif" alt="Hot" objectFit="contain" display="inline-block" verticalAlign="middle" boxSize="28px" />}
+                    {item.isNew && <Image src="/images/new.gif" alt="New" objectFit="contain" display="inline-block" verticalAlign="middle" boxSize="28px" />}
+                  </HStack>
+                </Heading>
                 <Text color={colorMode === "light" ? "gray.600" : "gray.300"}>{item.content?.substring(0, 100)}...</Text>
               </VStack>
             </MotionBox>

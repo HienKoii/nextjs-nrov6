@@ -1,7 +1,9 @@
 import { Box, Button, VStack, HStack, Text, Icon, useColorModeValue } from "@chakra-ui/react";
 import { FaKey, FaHistory, FaMoneyBill } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export default function MenuProfile() {
+  const router = useRouter();
   const borderColor = useColorModeValue("gray.200", "gray.700");
   const hoverBg = useColorModeValue("gray.50", "gray.700");
 
@@ -10,19 +12,19 @@ export default function MenuProfile() {
       icon: FaMoneyBill,
       label: "Nạp tiền",
       color: "blue",
-      onClick: () => {},
+      path: "/deposit",
     },
     {
       icon: FaKey,
       label: "Đổi mật khẩu",
       color: "purple",
-      onClick: () => {},
+      path: "/change-password",
     },
     {
       icon: FaHistory,
       label: "Lịch sử giao dịch",
       color: "green",
-      onClick: () => {},
+      path: "/transaction-history",
     },
   ];
 
@@ -31,13 +33,7 @@ export default function MenuProfile() {
       <Text fontSize="xl" fontWeight="bold" mb={2}>
         Quản lý tài khoản
       </Text>
-      <Box
-        w="full"
-        border="1px solid" //
-        borderColor={borderColor}
-        borderRadius="xl"
-        overflow="hidden"
-      >
+      <Box w="full" border="1px solid" borderColor={borderColor} borderRadius="xl" overflow="hidden">
         {menuItems.map((item, index) => (
           <Button
             key={item.label}
@@ -53,7 +49,7 @@ export default function MenuProfile() {
             _hover={{
               bg: hoverBg,
             }}
-            onClick={item.onClick}
+            onClick={() => router.push(item.path)}
           >
             <HStack spacing={4} w="full">
               <Icon as={item.icon} boxSize={5} color={`${item.color}.500`} />

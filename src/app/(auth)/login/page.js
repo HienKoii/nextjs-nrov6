@@ -7,20 +7,23 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 
-const MotionVStack = motion(VStack);
-const MotionFormControl = motion(FormControl);
-const MotionButton = motion(Button);
-const MotionLink = motion(Link);
+const MotionVStack = motion.create(VStack);
+const MotionFormControl = motion.create(FormControl);
+const MotionButton = motion.create(Button);
+const MotionLink = motion.create(Link);
 
 export default function LoginPage() {
   const { colorMode } = useColorMode();
   const router = useRouter();
   const toast = useToast();
-  const { login, user } = useAuth();
+  const { user, setUser, login } = useAuth();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   // Chuyển hướng nếu đã đăng nhập
   useEffect(() => {
-    if (user) {
+    const token = localStorage.getItem("token");
+    if (user || token) {
       router.push("/");
     }
   }, [user, router]);
@@ -29,7 +32,6 @@ export default function LoginPage() {
     username: "",
     password: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,22 +44,28 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
-      await login(formData);
+      const response = await login(formData);
 
-      toast({
-        title: "Đăng nhập thành công",
-        description: "Chào mừng bạn quay trở lại!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
-      });
+      if (response.data) {
+        const { token, user } = response.data;
 
-      // Chuyển hướng về trang chủ
-      router.push("/");
+        localStorage.setItem("token", token);
+        setUser(user);
+
+        toast({
+          title: "Đăng nhập thành công",
+          description: `Xin chào: ${formData.username}`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+
+        router.push("/");
+      }
     } catch (error) {
+      console.log("error", error);
       toast({
         title: "Lỗi đăng nhập",
         description: error.response?.data?.message || "Đăng nhập thất bại",
@@ -94,14 +102,40 @@ export default function LoginPage() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }}>
+        <MotionFormControl
+          isRequired
+          initial={{ x: -20, opacity: 0 }} //
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           <FormLabel>Tài khoản</FormLabel>
-          <Input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Nhập tài khoản của bạn" size="lg" />
+          <Input
+            type="text"
+            name="username" //
+            value={formData.username} //
+            onChange={handleChange}
+            placeholder="Nhập tài khoản của bạn"
+            size="lg"
+            autoComplete="username"
+          />
         </MotionFormControl>
 
-        <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.4 }}>
+        <MotionFormControl
+          isRequired
+          initial={{ x: -20, opacity: 0 }} //
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           <FormLabel>Mật khẩu</FormLabel>
-          <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Nhập mật khẩu của bạn" size="lg" />
+          <Input
+            type="password"
+            name="password" //
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Nhập mật khẩu của bạn"
+            size="lg"
+            autoComplete="current-password"
+          />
         </MotionFormControl>
 
         <MotionButton

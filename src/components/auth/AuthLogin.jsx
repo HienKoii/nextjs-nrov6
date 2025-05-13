@@ -6,7 +6,6 @@ import AvatarImage from "../images/AvatarImage";
 
 export default function AuthLogin() {
   const { user, loading } = useAuth();
-  console.log("user", user);
   const badgeBg = useColorModeValue("gray.200", "gray.700");
   const badgeColor = useColorModeValue("gray.600", "gray.300");
 

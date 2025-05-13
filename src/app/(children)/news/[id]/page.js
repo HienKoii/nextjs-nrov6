@@ -21,7 +21,7 @@ export default function NewsDetail() {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(`/api/news/${params.id}`);
+        const response = await axios.get(`/api/${process.env.NEXT_PUBLIC_API_PREFIX}/news/${params.id}`);
         console.log("API Response:", response.data);
 
         if (response.data) {
@@ -37,8 +37,6 @@ export default function NewsDetail() {
 
     fetchNewsDetail();
   }, [params.id]);
-
-
 
   if (loading) {
     return (
@@ -92,7 +90,11 @@ export default function NewsDetail() {
 
         {/* Tiêu đề và ngày đăng */}
         <VStack align="stretch" spacing={4}>
-          <Heading size="xl">{news.title}</Heading>
+          <Heading size="xl">
+            <span>{news.title}</span>
+            {news.isHot && <Image src="/images/hot.gif" alt="Hot" objectFit="contain" display="inline-block" verticalAlign="middle" height="28px" width="28px" ml={2} />}
+            {news.isNew && <Image src="/images/new.gif" alt="New" objectFit="contain" display="inline-block" verticalAlign="middle" height="28px" width="28px" ml={2} />}
+          </Heading>
           <Text color={colorMode === "light" ? "gray.600" : "gray.400"}>Ngày đăng: {new Date(news.created_at).toLocaleDateString("vi-VN")}</Text>
         </VStack>
 

@@ -8,7 +8,6 @@ export async function GET() {
       SELECT n.*, u.full_name as author_name 
       FROM news n
       JOIN users u ON n.author = u.username
-      ORDER BY n.created_at DESC 
       LIMIT 4
     `);
 

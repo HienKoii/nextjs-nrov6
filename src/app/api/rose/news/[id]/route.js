@@ -9,13 +9,7 @@ export async function GET(request, context) {
     const [rows] = await db.query(
       `
       SELECT 
-        n.id,
-        n.title,
-        n.content,
-        n.images,
-        n.created_at,
-        n.updated_at,
-        n.author
+        *
       FROM news n
       WHERE n.id = ?
     `,

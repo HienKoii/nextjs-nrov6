@@ -34,7 +34,7 @@ export default function NewsPage() {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(`/api/news?page=${currentPage}&limit=10`);
+        const response = await axios.get(`/api/${process.env.NEXT_PUBLIC_API_PREFIX}/news?page=${currentPage}&limit=10`);
         console.log("API Response:", response.data);
 
         if (response.data) {
@@ -109,8 +109,10 @@ export default function NewsPage() {
                     <Image src={getFirstImage(item.images)} alt={item.title} width="100%" height="100%" objectFit="cover" borderRadius="md" />
                   </Box>
                 </motion.div>
-                <Heading size="md">{item.title}</Heading>
-                <Text color={colorMode === "light" ? "gray.600" : "gray.300"}>{item.content?.substring(0, 100)}...</Text>
+                <Heading size="md" minH={"48px"}>
+                  {item.title}
+                </Heading>
+                <Text color={colorMode === "light" ? "gray.600" : "gray.300"}>{item.content?.substring(0, 200)}...</Text>
                 <Text fontSize="sm" color="gray.500">
                   {new Date(item.created_at).toLocaleDateString("vi-VN")}
                 </Text>

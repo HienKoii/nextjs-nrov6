@@ -24,13 +24,13 @@ const FacebookIcon = () => (
 );
 
 const socialLinks = [
-  {
-    icon: FacebookIcon,
-    title: "Facebook",
-    description: "Tham gia cộng đồng Facebook của chúng tôi để cập nhật tin tức mới nhất!",
-    link: "https://facebook.com/ngocrongonline",
-    color: "#1877F2",
-  },
+  // {
+  //   icon: FacebookIcon,
+  //   title: "Facebook",
+  //   description: "Tham gia cộng đồng Facebook của chúng tôi để cập nhật tin tức mới nhất!",
+  //   link: "https://facebook.com/ngocrongonline",
+  //   color: "#1877F2",
+  // },
   {
     icon: ZaloIcon,
     title: "Zalo",
@@ -45,9 +45,16 @@ export default function SocialLinksSection() {
 
   return (
     <Box py={12} px={4}>
-      <Heading textAlign="center" mb={8} fontSize={{ base: "2xl", md: "3xl" }}>
-        Kết Nối Với Chúng Tôi
-      </Heading>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
+        <Heading textAlign="center" mb={8} fontSize={{ base: "2xl", md: "3xl" }}>
+          Cộng đồng
+        </Heading>
+      </motion.div>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8} maxW="800px" mx="auto">
         {socialLinks.map((social, index) => (
           <Link key={index} href={social.link} isExternal _hover={{ textDecoration: "none" }}>

@@ -1,17 +1,16 @@
 "use client";
 
-import { Box, FormControl, FormLabel, Input, Button, VStack, Text, Link, useColorMode, Heading, FormErrorMessage, useToast } from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, Input, Button, VStack, Text, Link, useColorMode, Heading, useToast } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import axios from "axios";
 
-const MotionVStack = motion(VStack);
-const MotionFormControl = motion(FormControl);
-const MotionButton = motion(Button);
-const MotionLink = motion(Link);
+const MotionVStack = motion.create(VStack);
+const MotionFormControl = motion.create(FormControl);
+const MotionButton = motion.create(Button);
+const MotionLink = motion.create(Link);
 
 export default function RegisterPage() {
   const { colorMode } = useColorMode();
@@ -47,12 +46,13 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("/api/auth/register", formData);
+      const response = await register(formData);
+      console.log("response", response);
 
-      if (response.status === 200) {
+      if (response.data) {
         toast({
           title: "Đăng ký thành công",
-          description: response.message,
+          description: `Đăng ký  ${formData.username} thành công !`,
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -87,22 +87,22 @@ export default function RegisterPage() {
       <MotionVStack spacing={4} as="form" onSubmit={handleSubmit} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.2 }}>
         <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }}>
           <FormLabel>Tài khoản</FormLabel>
-          <Input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Nhập tên tài khoản" size="lg" maxLength={20} />
+          <Input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Nhập tên tài khoản" size="lg" maxLength={20} autoComplete="username" />
         </MotionFormControl>
 
         <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.4 }}>
           <FormLabel>Email</FormLabel>
-          <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Nhập email của bạn" size="lg" />
+          <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Nhập email của bạn" size="lg" autoComplete="email" />
         </MotionFormControl>
 
         <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.5 }}>
           <FormLabel>Mật khẩu</FormLabel>
-          <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Nhập mật khẩu" size="lg" maxLength={20} />
+          <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Nhập mật khẩu" size="lg" maxLength={20} autoComplete="new-password" />
         </MotionFormControl>
 
         <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.6 }}>
           <FormLabel>Nhập lại mật khẩu</FormLabel>
-          <Input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Nhập lại mật khẩu" size="lg" maxLength={20} />
+          <Input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Nhập lại mật khẩu" size="lg" maxLength={20} autoComplete="new-password" />
         </MotionFormControl>
 
         <MotionButton

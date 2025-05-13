@@ -17,15 +17,8 @@ export async function GET(request) {
     const [rows] = await db.query(
       `
       SELECT 
-        n.id,
-        n.title,
-        n.content,
-        n.images,
-        n.created_at,
-        n.updated_at,
-        n.author
+        *
       FROM news n
-      ORDER BY n.created_at DESC 
       LIMIT ? OFFSET ?
     `,
       [limit, offset]

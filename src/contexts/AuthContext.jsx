@@ -18,12 +18,11 @@ export function AuthProvider({ children }) {
       }
 
       try {
-        const response = await axios.get("/api/auth/me", {
+        const response = await axios.get(`/api/${process.env.NEXT_PUBLIC_API_PREFIX}/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
         setUser(response.data);
-        console.log("response.data setUser: ", response.data);
       } catch (error) {
         logout();
       } finally {
@@ -33,17 +32,13 @@ export function AuthProvider({ children }) {
 
     fetchUser();
   }, []);
-  // Hàm đăng nhập
+
   const login = async (credentials) => {
     try {
-      const response = await axios.post("/api/auth/login", credentials);
-      if (response.status == 200) {
-        const { token, user } = response.data;
-        localStorage.setItem("token", token);
-        setUser(user);
-      }
+      const response = await axios.post(`/api/${process.env.NEXT_PUBLIC_API_PREFIX}/auth/login`, credentials);
+      return response;
     } catch (error) {
-      console.log("error login: >>>>>", error);
+      throw error;
     }
   };
 
@@ -55,15 +50,16 @@ export function AuthProvider({ children }) {
 
   const register = async (credentials) => {
     try {
-      const response = await axios.post("/api/auth/register", credentials);
+      const response = await axios.post(`/api/${process.env.NEXT_PUBLIC_API_PREFIX}/auth/register`, credentials);
       return response;
     } catch (error) {
-      return error;
+      throw error;
     }
   };
 
   const value = {
     user,
+    setUser,
     loading,
     login,
     logout,

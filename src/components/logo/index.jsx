@@ -23,7 +23,7 @@ export default function Logo() {
             transition: { duration: 0.2 },
           }}
         >
-          GLogo
+          NRO OUTSIDE
         </MotionText>
       </Link>
     </Flex>
