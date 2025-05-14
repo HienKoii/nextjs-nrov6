@@ -52,6 +52,7 @@ export default function Navigation({ isMobile }) {
   const links = [
     { href: "/", label: "Trang chủ" },
     { href: "/download", label: "Tải game" },
+    { href: "/news", label: "Tin tức" },
     { href: "/about", label: "Giới thiệu" },
     { href: "/giftcode", label: "GiftCode" },
   ];
