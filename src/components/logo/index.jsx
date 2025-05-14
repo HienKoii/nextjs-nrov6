@@ -24,7 +24,7 @@ export default function Logo() {
           }}
           
         >
-          NRO OUTSIDE
+          NRO Ponny
         </MotionText>
       </Link>
     </Flex>
