@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Text, VStack, HStack, Icon, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { Box, Text, VStack, HStack, Icon, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { FaShieldAlt, FaHeart, FaCopyright } from "react-icons/fa";
 import Link from "next/link";
 
@@ -17,7 +17,7 @@ export default function Footer() {
       borderTop="1px"
       borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
     >
-      <Container maxW="container.lg">
+      <>
         <VStack spacing={6}>
           {/* Links Section */}
           <HStack spacing={8} justify="center" wrap="wrap">
@@ -79,7 +79,7 @@ export default function Footer() {
             <Text textAlign={"center"}>Vui lòng không chia sẻ thông tin tài khoản của bạn với người khác</Text>
           </HStack>
         </VStack>
-      </Container>
+      </>
     </Box>
   );
 }

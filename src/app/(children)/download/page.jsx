@@ -13,28 +13,28 @@ const downloadOptions = [
   {
     title: "Android",
     desc: "Dành cho điện thoại Android (APK hoặc Play Store)",
-    btn: { label: "Tải APK", href: "#apk" },
+    btn: { label: "Tải APK", href: "/files/nrolaunew.apk" },
     color: "green.400",
     icon: PhoneIcon,
   },
   {
     title: "iOS (iPhone/iPad)",
     desc: "Dành cho iPhone, iPad (file ipa)",
-    btn: { label: "Tải file IPA", href: "#appstore" },
+    btn: { label: "Tải file IPA", href: "/files/ngocronglau.ipa" },
     color: "gray.700",
     icon: StarIcon,
   },
   {
     title: "PC (Windows)",
     desc: "Dành cho máy tính Windows (XP, 7, 10, 11)",
-    btn: { label: "Tải bản PC", href: "#pc" },
+    btn: { label: "Tải bản PC", href: "/files/ngocronglau.rar" },
     color: "blue.500",
     icon: DownloadIcon,
   },
   {
     title: "Java (Nokia cũ)",
     desc: "Dành cho điện thoại Nokia bàn phím, Java ME",
-    btn: { label: "Tải bản Java", href: "#java" },
+    btn: { label: "Tải bản Java", href: "/files/DragonBoy230Prev1.7.jar" },
     color: "orange.400",
     icon: InfoIcon,
   },
@@ -47,9 +47,19 @@ export default function DownloadPage() {
   return (
     <VStack spacing={8} align="stretch">
       {/* Heading & Description */}
-      <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+      <motion.div
+        initial="hidden" //
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInUp}
+      >
         <Box textAlign="center">
-          <Heading size="xl" mb={2}>
+          <Heading
+            size="xl"
+            mb={2} //
+            bgGradient="linear(to-r, red.700, purple.800)"
+            bgClip="text"
+          >
             Tải Xuống
           </Heading>
           <Text fontSize="lg" color="gray.500">
@@ -59,13 +69,27 @@ export default function DownloadPage() {
       </motion.div>
 
       {/* Download Options Grid */}
-      <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-        <Grid templateColumns={{ base: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)", lg: "repeat(4, 1fr)" }} gap={6}>
+      <motion.div
+        initial="hidden"
+        whileInView="visible" //
+        viewport={{ once: true }}
+        variants={fadeInUp}
+      >
+        <Grid
+          templateColumns={{ base: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)", lg: "repeat(4, 1fr)" }} //
+          gap={6}
+        >
           {downloadOptions.map((opt, idx) => {
             const Icon = opt.icon;
             return (
               <GridItem key={opt.title}>
-                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} transition={{ delay: idx * 0.1 }}>
+                <motion.div
+                  initial="hidden"
+                  whileInView="visible" //
+                  viewport={{ once: true }}
+                  variants={fadeInUp}
+                  transition={{ delay: idx * 0.1 }}
+                >
                   <Box
                     bg={cardBg}
                     boxShadow={cardShadow}
@@ -89,11 +113,25 @@ export default function DownloadPage() {
                     <Text fontSize="sm" color="gray.500" mb={4}>
                       {opt.desc}
                     </Text>
-                    <Button as="a" href={opt.btn.href} colorScheme={opt.color.split(".")[0]} mb={opt.btn2 ? 2 : 0} w="100%" target="_blank">
+                    <Button
+                      as="a"
+                      href={opt.btn.href} //
+                      colorScheme={opt.color.split(".")[0]}
+                      mb={opt.btn2 ? 2 : 0}
+                      w="100%"
+                      target="_blank"
+                    >
                       {opt.btn.label}
                     </Button>
                     {opt.btn2 && (
-                      <Button as="a" href={opt.btn2.href} colorScheme={opt.color.split(".")[0]} variant="outline" w="100%" target="_blank">
+                      <Button
+                        as="a"
+                        href={opt.btn2.href} //
+                        colorScheme={opt.color.split(".")[0]}
+                        variant="outline"
+                        w="100%"
+                        target="_blank"
+                      >
                         {opt.btn2.label}
                       </Button>
                     )}
@@ -106,7 +144,12 @@ export default function DownloadPage() {
       </motion.div>
 
       {/* Hướng dẫn chọn phiên bản phù hợp */}
-      <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+      <motion.div
+        initial="hidden"
+        whileInView="visible" //
+        viewport={{ once: true }}
+        variants={fadeInUp}
+      >
         <Box mt={8}>
           <Heading size="lg" textAlign="center" mb={2}>
             Hướng dẫn chọn phiên bản phù hợp

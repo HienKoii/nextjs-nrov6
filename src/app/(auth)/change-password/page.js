@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useToast, Box, Container, VStack, Heading, FormControl, FormLabel, Input, Button, Text, useColorMode } from "@chakra-ui/react";
+import { useToast, Box, VStack, Heading, FormControl, FormLabel, Input, Button, Text, useColorMode } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -83,7 +83,12 @@ export default function ChangePasswordPage() {
   return (
     <MotionBox initial="hidden" animate="visible" variants={fadeInUp} bg={colorMode === "light" ? "white" : "gray.800"} p={8} borderRadius="xl" boxShadow="xl">
       <VStack spacing={8}>
-        <Heading size="xl" bgGradient="linear(to-r, red.700, purple.800)" bgClip="text" textAlign="center">
+        <Heading
+          size="xl" //
+          bgGradient="linear(to-r, red.700, purple.800)"
+          bgClip="text"
+          textAlign="center"
+        >
           Đổi mật khẩu
         </Heading>
 

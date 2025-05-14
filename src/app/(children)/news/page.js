@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Heading, Text, SimpleGrid, Image, VStack, useColorMode, Button, HStack, Spinner } from "@chakra-ui/react";
+import { Box, Heading, Text, SimpleGrid, Image, VStack, useColorMode, Button, HStack, Spinner } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -59,28 +59,24 @@ export default function NewsPage() {
 
   if (loading) {
     return (
-      <Container maxW="container.xl" py={8}>
-        <VStack spacing={4} align="center" justify="center" minH="50vh">
-          <Spinner size="xl" color="blue.500" />
-          <Text>Đang tải tin tức...</Text>
-        </VStack>
-      </Container>
+      <VStack spacing={4} align="center" justify="center" minH="50vh">
+        <Spinner size="xl" color="blue.500" />
+        <Text>Đang tải tin tức...</Text>
+      </VStack>
     );
   }
 
   if (error) {
     return (
-      <Container maxW="container.xl" py={8}>
-        <VStack spacing={4} align="center" justify="center" minH="50vh">
-          <Text color="red.500">{error}</Text>
-          <Button onClick={() => window.location.reload()}>Thử lại</Button>
-        </VStack>
-      </Container>
+      <VStack spacing={4} align="center" justify="center" minH="50vh">
+        <Text color="red.500">{error}</Text>
+        <Button onClick={() => window.location.reload()}>Thử lại</Button>
+      </VStack>
     );
   }
 
   return (
-    <Container maxW="container.xl" py={8}>
+    <>
       <MotionHeading size="xl" mb={8} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
         Tin tức
       </MotionHeading>
@@ -137,6 +133,6 @@ export default function NewsPage() {
           </Button>
         </HStack>
       )}
-    </Container>
+    </>
   );
 }

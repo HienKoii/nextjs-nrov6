@@ -22,6 +22,7 @@ export default function Logo() {
             color: "#3182CE",
             transition: { duration: 0.2 },
           }}
+          
         >
           NRO OUTSIDE
         </MotionText>

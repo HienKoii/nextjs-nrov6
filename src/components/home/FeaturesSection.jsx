@@ -35,7 +35,7 @@ const socialLinks = [
     icon: ZaloIcon,
     title: "Zalo",
     description: "Kết nối qua Zalo để nhận thông báo và hỗ trợ nhanh chóng!",
-    link: "https://zalo.me/ngocrongonline",
+    link: "https://zalo.me/g/todzie973",
     color: "#0068FF",
   },
 ];

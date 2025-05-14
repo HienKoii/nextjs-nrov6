@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Container, Heading, VStack, Text, Spinner, useColorMode, Table, Thead, Tbody, Tr, Th, Td, Badge, Center } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import {  Heading, VStack, Text, Spinner, useColorMode, Table, Thead, Tbody, Tr, Th, Td, Badge } from "@chakra-ui/react";
 import axios from "axios";
 
 export default function GiftCodePage() {
