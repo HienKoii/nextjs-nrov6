@@ -76,9 +76,7 @@ export default function NewsDetail() {
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink maxW={{ base: "120px", sm: "200px", md: "none" }} whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" title={news.title} display="inline-block" verticalAlign="bottom">
-              {news.title}
-            </BreadcrumbLink>
+            <BreadcrumbLink>{news.title}</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
 
@@ -116,25 +114,22 @@ export default function NewsDetail() {
 
         {/* Hình ảnh */}
         <Box borderRadius="lg" overflow="hidden">
-          <Image
-            src={getFirstImage(news.images)} //
-            alt={news.title}
-            width="100%"
-            height="400px"
-            objectFit="cover"
-          />
+          <Image src={getFirstImage(news.images)} alt={news.title} width="100%" height="400px" objectFit="cover" />
         </Box>
 
         {/* Nội dung */}
-
-        <Text whiteSpace="pre-line" lineHeight="1.8">
-          {news.content}
-        </Text>
+        <Box bg={colorMode === "light" ? "white" : "gray.700"} p={6} borderRadius="lg" boxShadow="sm">
+          <Text whiteSpace="pre-line" lineHeight="1.8">
+            {news.content}
+          </Text>
+        </Box>
 
         {/* Thông tin tác giả */}
-        <Text fontSize="sm" color={colorMode === "light" ? "gray.600" : "gray.400"}>
-          Tác giả: {news.author}
-        </Text>
+        <Box bg={colorMode === "light" ? "gray.50" : "gray.800"} p={4} borderRadius="lg">
+          <Text fontSize="sm" color={colorMode === "light" ? "gray.600" : "gray.400"}>
+            Tác giả: {news.author}
+          </Text>
+        </Box>
       </VStack>
     </>
   );

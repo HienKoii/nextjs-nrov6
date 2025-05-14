@@ -54,7 +54,7 @@ export default function Navigation({ isMobile }) {
     { href: "/download", label: "Tải game" },
     { href: "/news", label: "Tin tức" },
     { href: "/about", label: "Giới thiệu" },
-    { href: "/giftcode", label: "GiftCode" },
+    { href: "/features", label: "Chức năng" },
   ];
 
   if (isMobile) {

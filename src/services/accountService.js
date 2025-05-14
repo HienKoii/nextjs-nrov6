@@ -38,6 +38,7 @@ export async function getUserById(userId) {
     return {
       ...user,
       password: "đã che ^^",
+      playerId: player?.playerId || null,
       cName: player?.cName || null,
       gender: player?.cgender || null,
       head: player?.head || null,

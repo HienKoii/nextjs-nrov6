@@ -1,3 +1,4 @@
+"use client"
 import { Box, VStack, Image, Heading, Text, Button } from "@chakra-ui/react";
 import Link from "next/link";
 

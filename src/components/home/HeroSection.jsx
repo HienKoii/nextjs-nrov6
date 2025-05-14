@@ -64,7 +64,7 @@ export default function HeroSection() {
         position="relative"
         zIndex={1}
       >
-        Chào mừng đến với Ngọc Rồng Ponny
+        Chào mừng đến với Ngọc Rồng Out Side
       </MotionHeading>
       <MotionText
         fontSize="xl" //

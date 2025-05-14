@@ -4,6 +4,7 @@ import { IconButton, Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerCont
 import { HamburgerIcon } from "@chakra-ui/icons";
 import Navigation from "../nav/Navigation";
 import Footer from "@/layouts/Footer";
+import Logo from "../logo";
 
 export function MenuMobile() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -23,7 +24,9 @@ export function MenuMobile() {
         <DrawerOverlay />
         <DrawerContent bg={colorMode === "dark" ? "gray.800" : "white"}>
           <DrawerCloseButton />
-          <DrawerHeader borderBottomWidth="1px">Menu</DrawerHeader>
+          <DrawerHeader borderBottomWidth="1px">
+            <Logo />
+          </DrawerHeader>
           <DrawerBody>
             <VStack spacing={4} align="stretch">
               <Navigation isMobile />

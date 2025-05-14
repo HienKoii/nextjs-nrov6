@@ -7,8 +7,8 @@ import WelcomeModal from "@/components/modals/WelcomeModal";
 import { AuthProvider } from "@/contexts/AuthContext";
 
 export const metadata = {
-  title: "Chào mừng bạn đến với ngọc rồng Ponny",
-  description: "Ngọc rồng Ponny free all không nạp 100%",
+  title: "Chào mừng bạn đến với ngọc rồng outside",
+  description: "Ngọc rồng OutSide free all không nạp 100%",
 };
 
 export default function RootLayout({ children }) {
