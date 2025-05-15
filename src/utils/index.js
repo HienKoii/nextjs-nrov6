@@ -15,3 +15,7 @@ export const getFirstImage = (images) => {
   }
   return images[0];
 };
+
+export const baseItem = (itemId, quantity, listOptions) => {
+  return [itemId, 0, 7, quantity, false, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, false, false, listOptions ? listOptions : [], "", "", "#1 Vòng quay may mắn trên web", 0, false, -1, -1, -1, -1, -1, -1];
+};

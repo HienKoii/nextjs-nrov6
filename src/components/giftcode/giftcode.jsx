@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Spinner, useColorMode, Table, Thead, Tbody, Tr, Th, Td, Badge, Box } from "@chakra-ui/react";
+import { Spinner, useColorMode, Table, Thead, Tbody, Tr, Th, Td, Badge, Box, Flex } from "@chakra-ui/react";
 import axios from "axios";
 
 export default function GiftCode() {
@@ -25,7 +25,9 @@ export default function GiftCode() {
   return (
     <>
       {loading ? (
-        <Spinner size="lg" alignSelf="center" />
+        <Flex justifyContent={"center"} alignItems={"center"}>
+          <Spinner size="lg" alignSelf="center" />
+        </Flex>
       ) : (
         <Box overflowX="auto" w="100%">
           <Table

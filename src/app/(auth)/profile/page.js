@@ -34,7 +34,6 @@ export default function ProfilePage() {
   const router = useRouter();
 
   useEffect(() => {
-  console.log('userData', userData)
 
     if (!loading && !userData) {
       router.push("/");

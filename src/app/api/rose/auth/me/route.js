@@ -5,7 +5,6 @@ import { getUserById } from "@/services/accountService";
 export async function GET(req) {
   try {
     const authHeader = req.headers.get("authorization");
-    console.log("Auth header:", authHeader);
     if (!authHeader) return NextResponse.json({ message: "Không có token" }, { status: 401 });
 
     const token = authHeader.split(" ")[1];

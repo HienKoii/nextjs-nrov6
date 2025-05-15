@@ -8,13 +8,17 @@ async function getUserFromUsers(userId) {
 }
 
 // Lấy thông tin player từ bảng player
-async function getPlayerInfo(userId) {
+export async function getPlayerInfo(userId) {
   const [pl] = await db.query("SELECT * FROM player WHERE playerId = ?", [userId]);
   return pl?.[0] || null;
 }
-
+// Lấy thông tin player từ bảng player
+export async function getArrItemMores(playerId) {
+  const [row] = await db.query("SELECT * FROM arritemmores WHERE playerId = ?", [playerId]);
+  return JSON.parse(row?.[0]?.arrItemMore) || null;
+}
 // Lấy thông tin avatar từ bảng avatar
-async function getAvatarInfo(headId) {
+export async function getAvatarInfo(headId) {
   if (!headId) return null;
 
   const [avatar] = await db.query("SELECT idAvatar FROM head WHERE idHead = ?", [headId]);

@@ -6,6 +6,7 @@ import LuckyWheel from "@/components/luckywheel/LuckyWheel";
 import GiftCode from "@/components/giftcode/giftcode";
 import Error from "@/components/error";
 import SidebarFeatureMenu from "@/components/sidebar/SidebarFeatureMenu";
+import LuckyProvider from "@/contexts/LuckyContext";
 
 const features = [
   {
@@ -14,7 +15,11 @@ const features = [
     title: "Vòng quay may mắn",
     desc: "Tham gia vòng quay nhận phần thưởng hấp dẫn mỗi ngày.",
     color: "orange.400",
-    component: LuckyWheel,
+    component: () => (
+      <LuckyProvider>
+        <LuckyWheel />
+      </LuckyProvider>
+    ),
   },
   {
     key: "giftcode",

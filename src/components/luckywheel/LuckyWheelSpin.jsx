@@ -1,11 +1,10 @@
-import { Box, Button, VStack, useColorMode } from "@chakra-ui/react";
+import { Box, VStack} from "@chakra-ui/react";
 import { useRef } from "react";
 
 const colors = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40", "#E7E9ED", "#FF6384"];
 
 export default function LuckyWheelSpin({ prizes, spinning, onSpin, angle }) {
   const wheelRef = useRef();
-  const { colorMode } = useColorMode();
 
   // Vẽ các phần thưởng bằng SVG (ảnh + label)
   const renderSlices = () => {
@@ -25,10 +24,7 @@ export default function LuckyWheelSpin({ prizes, spinning, onSpin, angle }) {
       const iconR = radius - 55;
       const iconX = center + iconR * Math.cos((Math.PI * (startAngle + anglePer / 2)) / 180) - 22;
       const iconY = center + iconR * Math.sin((Math.PI * (startAngle + anglePer / 2)) / 180) - 22;
-      // Tính vị trí label
-      const labelR = radius - 20;
-      const labelX = center + labelR * Math.cos((Math.PI * (startAngle + anglePer / 2)) / 180);
-      const labelY = center + labelR * Math.sin((Math.PI * (startAngle + anglePer / 2)) / 180) + 18;
+      // Bỏ label trên vòng quay
       return (
         <g key={i}>
           <path d={`M${center},${center} L${x1},${y1} A${radius},${radius} 0 ${largeArc} 1 ${x2},${y2} Z`} fill={colors[i % colors.length]} stroke="#fff" strokeWidth={2} />
@@ -41,18 +37,6 @@ export default function LuckyWheelSpin({ prizes, spinning, onSpin, angle }) {
             height={44}
             style={{ pointerEvents: "none" }}
           />
-          {/* Label */}
-          <text
-            x={labelX}
-            y={labelY}
-            textAnchor="middle" //
-            alignmentBaseline="middle"
-            fontSize={13}
-            fill={colorMode === "light" ? "#222" : "#fff"}
-            style={{ pointerEvents: "none" }}
-          >
-            {prize.label}
-          </text>
         </g>
       );
     });
@@ -91,15 +75,6 @@ export default function LuckyWheelSpin({ prizes, spinning, onSpin, angle }) {
           />
         </Box>
       </Box>
-      <Button
-        colorScheme="orange"
-        size="lg" //
-        onClick={onSpin}
-        isLoading={spinning}
-        loadingText="Đang quay..."
-      >
-        Quay
-      </Button>
     </VStack>
   );
 }

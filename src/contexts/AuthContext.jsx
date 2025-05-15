@@ -9,27 +9,27 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const fetchUser = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axios.get(`/api/${process.env.NEXT_PUBLIC_API_PREFIX}/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setUser(response.data);
+    } catch (error) {
+      logout();
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await axios.get(`/api/${process.env.NEXT_PUBLIC_API_PREFIX}/auth/me`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        setUser(response.data);
-      } catch (error) {
-        logout();
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUser();
   }, []);
 
@@ -64,6 +64,7 @@ export function AuthProvider({ children }) {
     login,
     logout,
     register,
+    fetchUser
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
