@@ -29,7 +29,7 @@ export default function WelcomeModal() {
       <ModalOverlay backdropFilter="blur(4px)" />
       <MotionModalContent initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }} bg={colorMode === "light" ? "white" : "gray.800"} borderRadius="xl" overflow="hidden">
         <ModalHeader bgGradient="linear(to-r, red.700, purple.800)" bgClip="text" textAlign="center" fontSize="2xl" fontWeight="bold">
-          Chào mừng đến với Ngọc Rồng Out Side
+          Chào mừng đến với Ngọc Rồng Pony
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody py={6}>
