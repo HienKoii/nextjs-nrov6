@@ -34,7 +34,7 @@ const downloadOptions = [
   {
     title: "Java (Nokia cũ)",
     desc: "Dành cho điện thoại Nokia bàn phím, Java ME",
-    btn: { label: "Tải bản Java", href: "/files/DragonBoy230Prev1.7.jar" },
+    btn: { label: "Tải bản Java", href: "/files/nroPony230Prev1.7.jar" },
     color: "orange.400",
     icon: InfoIcon,
   },
