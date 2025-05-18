@@ -34,7 +34,6 @@ export default function ProfilePage() {
   const router = useRouter();
 
   useEffect(() => {
-
     if (!loading && !userData) {
       router.push("/");
     }
@@ -94,7 +93,7 @@ export default function ProfilePage() {
                   <Badge colorScheme="purple" fontSize="sm">
                     Level {userData?.level}
                   </Badge>
-                  {userData?.isAdmin === 1 ? (
+                  {userData?.isAdmin || userData?.is_admin === 1 ? (
                     <Badge colorScheme="red" fontSize="sm">
                       Admin
                     </Badge>
@@ -103,7 +102,7 @@ export default function ProfilePage() {
                       Member
                     </Badge>
                   )}
-                  {userData?.isLock === 1 ? (
+                  {userData?.isLock || userData?.ban === 1 ? (
                     <Badge colorScheme="red" fontSize="sm">
                       <Icon as={FaLock} mr={1} /> Khóa
                     </Badge>
@@ -140,7 +139,7 @@ export default function ProfilePage() {
                     Money
                   </Text>
                   <Heading size="lg" color={headingColor}>
-                    {userData?.money?.toLocaleString()}đ
+                    {userData?.money?.toLocaleString() || userData?.vnd?.toLocaleString()}đ
                   </Heading>
                 </VStack>
               </CardBody>
@@ -193,7 +192,14 @@ export default function ProfilePage() {
         </Grid>
 
         {/* Info Table */}
-        <MotionCard variants={fadeInUp} bg={cardBg} borderRadius="xl" border="1px solid" borderColor={borderColor} mb={8}>
+        <MotionCard
+          variants={fadeInUp}
+          bg={cardBg} //
+          borderRadius="xl"
+          border="1px solid"
+          borderColor={borderColor}
+          mb={8}
+        >
           <CardBody>
             <VStack spacing={6} align="stretch">
               <Heading size="md" color={headingColor}>
@@ -224,7 +230,7 @@ export default function ProfilePage() {
                         Email
                       </Text>
                       <Text color={headingColor} fontWeight="medium">
-                        {userData?.gmail}
+                        {userData?.gmail || userData?.email}
                       </Text>
                     </VStack>
                   </HStack>
@@ -237,7 +243,7 @@ export default function ProfilePage() {
                         Ngày tham gia
                       </Text>
                       <Text color={headingColor} fontWeight="medium">
-                        {formatDate(userData?.time)}
+                        {formatDate(userData?.time || userData?.create_time)}
                       </Text>
                     </VStack>
                   </HStack>
@@ -276,7 +282,7 @@ export default function ProfilePage() {
                         Vai trò
                       </Text>
                       <Text color={headingColor} fontWeight="medium">
-                        {userData?.isAdmin === 1 ? "Admin" : "Member"}
+                        {userData?.isAdmin || userData?.is_admin === 1 ? "Admin" : "Member"}
                       </Text>
                     </VStack>
                   </HStack>

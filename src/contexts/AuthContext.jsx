@@ -22,6 +22,7 @@ export function AuthProvider({ children }) {
       });
 
       setUser(response.data);
+      console.log('response.data', response.data)
     } catch (error) {
       logout();
     } finally {
@@ -64,7 +65,7 @@ export function AuthProvider({ children }) {
     login,
     logout,
     register,
-    fetchUser
+    fetchUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

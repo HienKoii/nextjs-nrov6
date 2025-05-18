@@ -3,28 +3,96 @@ import { createHistory } from "./historyService";
 
 // Lấy thông tin user từ bảng users
 async function getUserFromUsers(userId) {
-  const [user] = await db.query("SELECT * FROM users WHERE id = ?", [userId]);
+  let sql;
+
+  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
+    sql = `SELECT * FROM users WHERE id = ?`;
+  } else {
+    sql = `SELECT * FROM account WHERE id = ?`;
+  }
+
+  const [user] = await db.query(sql, [userId]);
   return user?.[0] || null;
 }
 
 // Lấy thông tin player từ bảng player
 export async function getPlayerInfo(userId) {
-  const [pl] = await db.query("SELECT * FROM player WHERE playerId = ?", [userId]);
+  let sql;
+
+  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
+    sql = "SELECT * FROM player WHERE playerId = ?";
+  } else {
+    sql = "SELECT * FROM player WHERE account_id = ?";
+  }
+
+  const [pl] = await db.query(sql, [userId]);
   return pl?.[0] || null;
 }
-// Lấy thông tin player từ bảng player
-export async function getArrItemMores(playerId) {
-  const [row] = await db.query("SELECT * FROM arritemmores WHERE playerId = ?", [playerId]);
-  return JSON.parse(row?.[0]?.arrItemMore) || null;
-}
+
 // Lấy thông tin avatar từ bảng avatar
 export async function getAvatarInfo(headId) {
   if (!headId) return null;
 
-  const [avatar] = await db.query("SELECT idAvatar FROM head WHERE idHead = ?", [headId]);
-  return avatar?.[0]?.idAvatar || null;
+  let sql;
+
+  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
+    sql = "SELECT idAvatar FROM head WHERE idHead = ?";
+  } else {
+    sql = "SELECT avatar_id FROM head_avatar WHERE head_id = ?";
+  }
+
+  const [avatar] = await db.query(sql, [headId]);
+  const payload = process.env.NEXT_PUBLIC_API_PREFIX == "rose" ? avatar?.[0]?.idAvatar : avatar?.[0]?.avatar_id;
+  return payload;
 }
 
+export async function getPasswordById(id) {
+  if (!id) return null;
+  const is = process.env.NEXT_PUBLIC_API_PREFIX == "rose" ? `user` : `account`;
+  const [row] = await db.query(`SELECT password FROM ${is} WHERE id = ?`, [username, password]);
+  return row;
+}
+
+export async function updatePasswordById(newPassword, id) {
+  const is = process.env.NEXT_PUBLIC_API_PREFIX == "rose" ? `user` : `account`;
+  await db.query(`UPDATE ${is} SET password = ? WHERE id = ?`, [newPassword, id]);
+}
+
+export async function getUsernameOrEmail(username, email) {
+  let sql;
+  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
+    sql = "SELECT username, gmail FROM users WHERE username = ? OR gmail = ?";
+  } else {
+    sql = "SELECT username, email FROM account WHERE username = ? OR email = ?";
+  }
+  const [existingUser] = await db.query(sql, [username, email]);
+  return existingUser;
+}
+
+export async function createUser(username, email, password) {
+  let sql;
+  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
+    sql = "INSERT INTO users (username, gmail, password) VALUES (?, ?, ?)";
+  } else {
+    sql = "INSERT INTO account (username, email, password) VALUES (?, ?, ?)";
+  }
+
+  await db.query(sql, [username, email, password]);
+}
+
+export async function getUserByUsernamePassword(username, password) {
+  if (!username) return null;
+  if (!password) return null;
+  let sql;
+
+  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
+    sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+  } else {
+    sql = "SELECT * FROM account WHERE username = ? AND password = ?";
+  }
+  const [user] = await db.query(sql, [username, password]);
+  return user || null;
+}
 // Hàm chính để lấy thông tin user
 export async function getUserById(userId) {
   try {
@@ -39,7 +107,7 @@ export async function getUserById(userId) {
     const idAvatar = await getAvatarInfo(player?.head);
 
     // Trả về object kết hợp thông tin
-    return {
+    const dataRose = {
       ...user,
       password: "đã che ^^",
       playerId: player?.playerId || null,
@@ -48,6 +116,17 @@ export async function getUserById(userId) {
       head: player?.head || null,
       avatar: idAvatar,
     };
+    const dataNro = {
+      ...user,
+      password: "đã che ^^",
+      playerId: player?.playerId || null,
+      cName: player?.name || null,
+      gender: player?.gender || null,
+      head: player?.head || null,
+      avatar: idAvatar,
+    };
+
+    return process.env.NEXT_PUBLIC_API_PREFIX == "rose" ? dataRose : dataNro;
   } catch (error) {
     console.error("Lỗi khi lấy thông tin user:", error);
     throw error;
