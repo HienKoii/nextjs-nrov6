@@ -78,7 +78,7 @@ export default function LuckyWheel() {
       onOpen();
       if (user.playerId && prize.itemId && prize.quantity > 0) {
         await updateArrItemMore(user, prize.itemId, prize.quantity, prize.listOptions);
-        await saveWinner(user.playerId, baseItem(prize.itemId, prize.quantity, prize.listOptions));
+        await saveWinner(user.id, user.playerId, baseItem(prize.itemId, prize.quantity, prize.listOptions));
         await fetchUser();
       }
     }, 3500);
@@ -137,7 +137,7 @@ export default function LuckyWheel() {
       onOpen();
       if (user.playerId && prize.itemId && prize.quantity > 0) {
         await updateArrItemMore(user, prize.itemId, prize.quantity, prize.listOptions);
-        await saveWinner(user.playerId, baseItem(prize.itemId, prize.quantity, prize.listOptions));
+        await saveWinner(user.id, user.playerId, baseItem(prize.itemId, prize.quantity, prize.listOptions));
         await fetchUser();
       }
     }, 3500);

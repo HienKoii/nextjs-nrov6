@@ -15,6 +15,16 @@ async function getUserFromUsers(userId) {
   return user?.[0] || null;
 }
 
+export async function getArrItemMores(playerId) {
+  const [row] = await db.query("SELECT * FROM arritemmores WHERE playerId = ?", [playerId]);
+  return row?.[0] || null;
+}
+
+export async function getArrItemBoxGift(playerId) {
+  const [row] = await db.query("SELECT * FROM player_box_gift WHERE player_id = ?", [playerId]);
+  return JSON.parse(row?.[0]?.items_box_gift) || null;
+}
+
 // Lấy thông tin player từ bảng player
 export async function getPlayerInfo(userId) {
   let sql;
@@ -119,7 +129,7 @@ export async function getUserById(userId) {
     const dataNro = {
       ...user,
       password: "đã che ^^",
-      playerId: player?.playerId || null,
+      playerId: player?.id || null,
       cName: player?.name || null,
       gender: player?.gender || null,
       head: player?.head || null,

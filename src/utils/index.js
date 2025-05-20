@@ -17,5 +17,18 @@ export const getFirstImage = (images) => {
 };
 
 export const baseItem = (itemId, quantity, listOptions) => {
-  return [itemId, 0, 7, quantity, false, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, false, false, listOptions ? listOptions : [], "", "", "#1 Vòng quay may mắn trên web", 0, false, -1, -1, -1, -1, -1, -1];
+  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
+    return [itemId, 0, 7, quantity, false, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, false, false, listOptions ? listOptions : [], "", "", "#1 Vòng quay may mắn trên web", 0, false, -1, -1, -1, -1, -1, -1];
+  } else {
+    const optionsStr = convertOptions(listOptions);
+    const item = `[${itemId},${quantity ? quantity : 1},${JSON.stringify(optionsStr)},1720969326362]`;
+    console.log("item", item);
+    return item;
+  }
+};
+
+const convertOptions = (listOptions) => {
+  const resultArray = listOptions.map((item) => `"${JSON.stringify(item)}"`);
+  const finalResult = `[${resultArray.join(",")}]`;
+  return finalResult;
 };

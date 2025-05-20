@@ -18,8 +18,9 @@ export async function POST(request) {
       return NextResponse.json({ message: "Sai tài khoản hoặc mật khẩu." }, { status: 401 });
     }
 
+    const dataUser = await getUserById(user[0].id);
     // Tạo JWT Token
-    const token = jwt.sign({ id: user[0].id, username: user[0].username, is_admin: user[0].is_admin }, SECRET_KEY, { expiresIn: process.env.JWT_EXPIRES_IN });
+    const token = jwt.sign(dataUser, SECRET_KEY, { expiresIn: process.env.JWT_EXPIRES_IN });
 
     // Lấy thông tin đầy đủ của user
     const userData = await getUserById(user[0].id);

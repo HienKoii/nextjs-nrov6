@@ -34,7 +34,7 @@ export default function NewsPage() {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(`/api/${process.env.NEXT_PUBLIC_API_PREFIX}/news?page=${currentPage}&limit=10`);
+        const response = await axios.get(`/api/news?page=${currentPage}&limit=10`);
         console.log("API Response:", response.data);
 
         if (response.data) {

@@ -13,56 +13,80 @@ export default function LuckyProvider({ children }) {
       itemName: "Cuồng nộ 2",
       quantity: 100,
       image: "/images/wheel/10716.png",
-      listOptions: [],
+      listOptions: [
+        [30, 1],
+        [31, 1],
+      ],
     },
     {
       itemId: 457,
       itemName: "Thỏi vàng",
       quantity: 200,
       image: "/images/wheel/4028.png",
-      listOptions: [],
+      listOptions: [
+        [30, 1],
+        [31, 1],
+      ],
     },
     {
       itemId: 1151,
       itemName: "Bổ khí 2",
       quantity: 100,
       image: "/images/wheel/10715.png",
-      listOptions: [],
+      listOptions: [
+        [30, 1],
+        [31, 1],
+      ],
     },
     {
       itemId: 457,
       itemName: "Thỏi vàng",
       quantity: 1000,
       image: "/images/wheel/4028.png",
-      listOptions: [[30, 1]],
+      listOptions: [
+        [30, 1],
+        [31, 1],
+      ],
     },
     {
       itemId: 1152,
       itemName: "Bổ huyết 2",
       quantity: 100,
       image: "/images/wheel/10714.png",
-      listOptions: [[30, 1]],
+      listOptions: [
+        [30, 1],
+        [31, 1],
+      ],
     },
     {
       itemId: 1153,
       itemName: "Giáp Xên bọ hung 2",
       quantity: 100,
       image: "/images/wheel/10712.png",
-      listOptions: [[30, 1]],
+      listOptions: [
+        [30, 1],
+        [31, 1],
+      ],
     },
     {
       itemId: 457,
       itemName: "Thỏi vàng",
       quantity: 50000,
       image: "/images/wheel/4028.png",
-      listOptions: [[30, 1]],
+      listOptions: [
+        [30, 1],
+        [31, 1],
+      ],
     },
     {
       itemId: 1154,
       itemName: "Ẩn danh 2",
       quantity: 100,
       image: "/images/wheel/10717.png",
-      listOptions: [[30, 1]],
+      listOptions: [
+        [30, 1],
+        [31, 1],
+      ],
     },
   ];
 
@@ -70,12 +94,22 @@ export default function LuckyProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   const updateUserLuckyMoney = async (user, newLucky, newMoney) => {
+    const payload = {
+      userId: user.id,
+      lucky: newLucky,
+      money: newMoney,
+    };
+
+    const token = localStorage.getItem("token");
+
     try {
-      await axios.post(`/api/rose/user/update-lucky-money`, {
-        userId: user.id,
-        lucky: newLucky,
-        money: newMoney,
-      });
+      if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
+        await axios.post(`/api/rose/user/update-lucky-money`, payload);
+      } else {
+        await axios.post(`/api/nro/lucky/start`, payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      }
     } catch (err) {
       console.log("err updateUserLuckyMoney: ", err);
     }
@@ -83,20 +117,33 @@ export default function LuckyProvider({ children }) {
 
   const fetchWinners = async () => {
     setLoading(true);
-    try {
-      const res = await axios.get("/api/rose/winner");
-      console.log("res fetchWinners: ", res);
-      setWinners(res.data);
-    } catch (err) {
-      console.log("err fetchWinners: ", err);
+
+    if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
+      try {
+        const res = await axios.get("/api/rose/winner");
+        console.log("res fetchWinners: ", res);
+        setWinners(res.data);
+      } catch (err) {
+        console.log("err fetchWinners: ", err);
+      }
+    } else {
+      try {
+        const res = await axios.get("/api/nro/lucky/winner");
+        console.log("res rose fetchWinners: ", res);
+        setWinners(res.data);
+      } catch (err) {
+        console.log("err nro fetchWinners: ", err);
+      }
     }
+
     setLoading(false);
   };
 
   // Hàm lưu lịch sử quay trúng thưởng vào DB
-  const saveWinner = async (playerId, itemArr) => {
+  const saveWinner = async (userId, playerId, itemArr) => {
     try {
       await axios.post("/api/rose/winner", {
+        userId,
         playerId,
         item: JSON.stringify(itemArr),
       });
@@ -107,13 +154,26 @@ export default function LuckyProvider({ children }) {
   };
 
   const updateArrItemMore = async (user, itemId, quantity, listOptions) => {
-    try {
-      await axios.post("/api/rose/player/update-arritemmore", {
-        playerId: user.playerId,
-        itemMore: baseItem(itemId, quantity, listOptions),
-      });
-    } catch (err) {
-      console.log("err updateArrItemMore: ", err);
+    const payload = {
+      playerId: user.playerId,
+      itemMore: baseItem(itemId, quantity, listOptions),
+    };
+
+    if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
+      try {
+        await axios.post("/api/rose/player/update-arritemmore", payload);
+      } catch (err) {
+        console.log("err updateArrItemMore: ", err);
+      }
+    } else {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.post("/api/nro/player/box-gift", payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      } catch (err) {
+        console.log("err updateArrItemMore box-gift: ", err);
+      }
     }
   };
 

@@ -18,7 +18,7 @@ export default function SliderSection() {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(`/api/${process.env.NEXT_PUBLIC_API_PREFIX}/news?page=1&limit=5`);
+        const response = await axios.get(`/api/news?page=1&limit=5`);
 
         if (response.data && response.data.news) {
           setSlides(response.data.news);

@@ -32,7 +32,7 @@ export default function NewsSection() {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(`/api/${process.env.NEXT_PUBLIC_API_PREFIX}/news?page=${currentPage}&limit=4`);
+        const response = await axios.get(`/api/news?page=${currentPage}&limit=4`);
 
         if (response.data) {
           setNews(response.data.news);

@@ -21,7 +21,7 @@ export default function NewsDetail() {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(`/api/${process.env.NEXT_PUBLIC_API_PREFIX}/news/${params.id}`);
+        const response = await axios.get(`/api/news/${params.id}`);
         console.log("API Response:", response.data);
 
         if (response.data) {
