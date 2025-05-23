@@ -84,10 +84,20 @@ export default function RegisterPage() {
         <Text color={colorMode === "light" ? "gray.600" : "gray.400"}>Vui lòng điền thông tin để tạo tài khoản mới</Text>
       </Box>
 
-      <MotionVStack spacing={4} as="form" onSubmit={handleSubmit} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.2 }}>
+      <MotionVStack
+        spacing={4}
+        as="form" //
+        onSubmit={handleSubmit}
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
         <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }}>
           <FormLabel>Tài khoản</FormLabel>
           <Input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Nhập tên tài khoản" size="lg" maxLength={20} autoComplete="username" />
+          <Text fontSize="sm" color="gray.500" mt={1}>
+            Tài khoản chỉ được chứa chữ cái, số và dấu gạch dưới (_), tối đa 20 ký tự
+          </Text>
         </MotionFormControl>
 
         <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.4 }}>
@@ -98,6 +108,9 @@ export default function RegisterPage() {
         <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.5 }}>
           <FormLabel>Mật khẩu</FormLabel>
           <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Nhập mật khẩu" size="lg" maxLength={20} autoComplete="new-password" />
+          <Text fontSize="sm" color="gray.500" mt={1}>
+            Mật khẩu chỉ được chứa chữ cái, số và dấu gạch dưới (_), tối đa 20 ký tự
+          </Text>
         </MotionFormControl>
 
         <MotionFormControl isRequired initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.6 }}>

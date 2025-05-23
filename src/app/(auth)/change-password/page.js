@@ -102,11 +102,17 @@ export default function ChangePasswordPage() {
             <FormControl isRequired>
               <FormLabel>Mật khẩu mới</FormLabel>
               <Input type="password" name="newPassword" value={formData.newPassword} onChange={handleChange} size="lg" placeholder="Nhập mật khẩu mới" />
+              <Text fontSize="sm" color="gray.500" mt={1}>
+                Mật khẩu chỉ được chứa chữ cái, số và dấu gạch dưới (_), tối đa 20 ký tự
+              </Text>
             </FormControl>
 
             <FormControl isRequired>
               <FormLabel>Xác nhận mật khẩu mới</FormLabel>
               <Input type="password" name="confirmNewPassword" value={formData.confirmNewPassword} onChange={handleChange} size="lg" placeholder="Nhập lại mật khẩu mới" />
+              <Text fontSize="sm" color="gray.500" mt={1}>
+                Mật khẩu chỉ được chứa chữ cái, số và dấu gạch dưới (_), tối đa 20 ký tự
+              </Text>
             </FormControl>
 
             <Button
