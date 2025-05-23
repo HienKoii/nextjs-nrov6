@@ -1,4 +1,7 @@
-export const isValid = (value) => /^[a-z0-9]{1,20}$/.test(value);
+export const isValid = (input) => {
+  const regex = /^[a-zA-Z0-9_]+$/;
+  return regex.test(input) && input.length <= 255;
+};
 export const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString("vi-VN", {

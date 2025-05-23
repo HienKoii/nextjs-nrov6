@@ -13,7 +13,7 @@ export async function POST(request) {
     }
 
     if (!isValid(username) || !isValid(password)) {
-      return NextResponse.json({ message: "Tài khoản hoặc mật khẩu không hợp lệ." }, { status: 400 });
+      return NextResponse.json({ message: "Tài khoản và mật khẩu chỉ được chứa chữ cái, số và dấu gạch dưới (_)." }, { status: 400 });
     }
 
     if (username.length > 20 || password.length > 20) {

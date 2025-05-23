@@ -18,7 +18,7 @@ export async function POST(req) {
     }
 
     if (!isValid(newPassword) || !isValid(confirmNewPassword)) {
-      return NextResponse.json({ message: "Mật khẩu không hợp lệ" }, { status: 400 });
+      return NextResponse.json({ message: "Mật khẩu chỉ được chứa chữ cái, số và dấu gạch dưới (_)." }, { status: 400 });
     }
 
     if (newPassword !== confirmNewPassword) {
