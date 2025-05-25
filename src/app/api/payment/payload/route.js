@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 import { MD5 } from "crypto-js";
 import axios from "axios";
 import jwt from "jsonwebtoken";
-import db from "@/lib/db";
+import db from "@/config/db";
 
 export async function POST(req) {
   try {

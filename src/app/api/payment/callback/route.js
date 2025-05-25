@@ -1,4 +1,4 @@
-import db from "@/lib/db";
+import db from "@/config/db";
 import { updateAccountMoney } from "@/Services/accountService";
 import { NextResponse } from "next/server";
 
