@@ -22,7 +22,6 @@ export function AuthProvider({ children }) {
       });
 
       setUser(response.data);
-      console.log('response.data', response.data)
     } catch (error) {
       logout();
     } finally {

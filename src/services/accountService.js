@@ -165,7 +165,7 @@ export async function updateAccountMoney(accountId, value, isActive, isTopUp) {
     const totalMoney = value * (parseFloat(process.env.PROMO_RATE) || 1);
 
     // Xây dựng câu lệnh SQL động dựa trên isActive và isTopUp
-    const updateFields = [`money = money + ?`];
+    const updateFields = [`vnd = vnd + ?`];
 
     if (isTopUp) {
       updateFields.push(`tongnap = tongnap + ?`, `naptuan = naptuan + ?`);
@@ -200,8 +200,8 @@ export async function updateAccountMoney(accountId, value, isActive, isTopUp) {
     if (updatedUser.length > 0) {
       const user = updatedUser[0];
 
-      // Ghi lại lịch sử giao dịch
-      await createHistory(user.username, totalMoney, `${user.username} vừa được cộng tiền trên web thành công!`);
+      // // Ghi lại lịch sử giao dịch
+      // await createHistory(user.username, totalMoney, `${user.username} vừa được cộng tiền trên web thành công!`);
 
       return user;
     }

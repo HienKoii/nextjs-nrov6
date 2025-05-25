@@ -34,7 +34,8 @@ export default function ProfilePage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !userData) {
+    const token = localStorage.getItem("token");
+    if (!loading && !userData && !token) {
       router.push("/");
     }
   }, [loading, userData, router]);

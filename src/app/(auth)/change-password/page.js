@@ -6,8 +6,7 @@ import axios from "axios";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-const MotionBox = motion(Box);
-const MotionVStack = motion(VStack);
+const MotionBox = motion.create(Box);
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
