@@ -1,5 +1,5 @@
 import db from "@/config/db";
-import { updateAccountMoney } from "@/Services/accountService";
+import { updateAccountMoney } from "@/services/accountService";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
@@ -52,7 +52,7 @@ export async function GET(request) {
 
     // Nếu `status` là 1 hoặc 2, cập nhật số dư tài khoản bằng hàm updateAccountBalance
     if (status === 1 || status === 2) {
-      const updatedUser = await updateAccountMoney(accountId, value, true , true);
+      const updatedUser = await updateAccountMoney(accountId, value, true, true);
       console.log(`Tài khoản ${accountId} vừa nạp ${value} VNĐ thành công!`, updatedUser);
     }
 
