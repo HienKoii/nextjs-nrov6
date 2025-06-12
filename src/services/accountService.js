@@ -95,11 +95,12 @@ export async function getUserByUsernamePassword(username, password) {
   if (!password) return null;
   let sql;
 
-  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
-    sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-  } else {
-    sql = "SELECT * FROM account WHERE username = ? AND password = ?";
-  }
+  // if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
+  //   sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+  // } else {
+  //   sql = "SELECT * FROM account WHERE username = ? AND password = ?";
+  // }
+  sql = "SELECT * FROM account WHERE username = ? AND password = ?";
   const [user] = await db.query(sql, [username, password]);
   return user || null;
 }

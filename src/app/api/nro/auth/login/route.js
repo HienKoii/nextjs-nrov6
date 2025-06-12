@@ -1,4 +1,3 @@
-import db from "@/config/db";
 import { getUserById, getUserByUsernamePassword } from "@/services/accountService";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
