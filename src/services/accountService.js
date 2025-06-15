@@ -3,14 +3,7 @@ import { createHistory } from "./historyService";
 
 // Lấy thông tin user từ bảng users
 async function getUserFromUsers(userId) {
-  let sql;
-
-  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
-    sql = `SELECT * FROM users WHERE id = ?`;
-  } else {
-    sql = `SELECT * FROM account WHERE id = ?`;
-  }
-
+  const sql = `SELECT * FROM account WHERE id = ?`;
   const [user] = await db.query(sql, [userId]);
   return user?.[0] || null;
 }
@@ -27,14 +20,7 @@ export async function getArrItemBoxGift(playerId) {
 
 // Lấy thông tin player từ bảng player
 export async function getPlayerInfo(userId) {
-  let sql;
-
-  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
-    sql = "SELECT * FROM player WHERE playerId = ?";
-  } else {
-    sql = "SELECT * FROM player WHERE account_id = ?";
-  }
-
+  const sql = "SELECT * FROM player WHERE account_id = ?";
   const [pl] = await db.query(sql, [userId]);
   return pl?.[0] || null;
 }
@@ -42,68 +28,52 @@ export async function getPlayerInfo(userId) {
 // Lấy thông tin avatar từ bảng avatar
 export async function getAvatarInfo(headId) {
   if (!headId) return null;
-
-  let sql;
-
-  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
-    sql = "SELECT idAvatar FROM head WHERE idHead = ?";
-  } else {
-    sql = "SELECT avatar_id FROM head_avatar WHERE head_id = ?";
-  }
-
+  const sql = "SELECT avatar_id FROM head_avatar WHERE head_id = ?";
   const [avatar] = await db.query(sql, [headId]);
-  const payload = process.env.NEXT_PUBLIC_API_PREFIX == "rose" ? avatar?.[0]?.idAvatar : avatar?.[0]?.avatar_id;
-  return payload;
+  return avatar?.[0]?.avatar_id;
 }
 
 export async function getPasswordById(id) {
   if (!id) return null;
-  const is = process.env.NEXT_PUBLIC_API_PREFIX == "rose" ? `user` : `account`;
-  const [row] = await db.query(`SELECT password FROM ${is} WHERE id = ?`, [username, password]);
+  const [row] = await db.query(`SELECT password FROM account WHERE id = ?`, [id]);
   return row;
 }
 
 export async function updatePasswordById(newPassword, id) {
-  const is = process.env.NEXT_PUBLIC_API_PREFIX == "rose" ? `user` : `account`;
-  await db.query(`UPDATE ${is} SET password = ? WHERE id = ?`, [newPassword, id]);
+  await db.query(`UPDATE account SET password = ? WHERE id = ?`, [newPassword, id]);
 }
 
 export async function getUsernameOrEmail(username, email) {
-  let sql;
-  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
-    sql = "SELECT username, gmail FROM users WHERE username = ? OR gmail = ?";
-  } else {
-    sql = "SELECT username, email FROM account WHERE username = ? OR email = ?";
-  }
+  const sql = "SELECT username, email FROM account WHERE username = ? OR email = ?";
   const [existingUser] = await db.query(sql, [username, email]);
   return existingUser;
 }
 
 export async function createUser(username, email, password) {
-  let sql;
-  if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
-    sql = "INSERT INTO users (username, gmail, password) VALUES (?, ?, ?)";
-  } else {
-    sql = "INSERT INTO account (username, email, password) VALUES (?, ?, ?)";
+  const sql = "INSERT INTO account (username, email, password) VALUES (?, ?, ?)";
+  try {
+    const [result] = await db.query(sql, [username, email, password]);
+    // Verify the insert was successful
+    if (result.affectedRows === 1) {
+      // Wait a bit to ensure transaction is committed
+      await new Promise(resolve => setTimeout(resolve, 100));
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Error creating user:', error);
+    throw error;
   }
-
-  await db.query(sql, [username, email, password]);
 }
 
 export async function getUserByUsernamePassword(username, password) {
   if (!username) return null;
   if (!password) return null;
-  let sql;
-
-  // if (process.env.NEXT_PUBLIC_API_PREFIX == "rose") {
-  //   sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-  // } else {
-  //   sql = "SELECT * FROM account WHERE username = ? AND password = ?";
-  // }
-  sql = "SELECT * FROM account WHERE username = ? AND password = ?";
+  const sql = "SELECT * FROM account WHERE username = ? AND password = ?";
   const [user] = await db.query(sql, [username, password]);
   return user || null;
 }
+
 // Hàm chính để lấy thông tin user
 export async function getUserById(userId) {
   try {
@@ -118,16 +88,7 @@ export async function getUserById(userId) {
     const idAvatar = await getAvatarInfo(player?.head);
 
     // Trả về object kết hợp thông tin
-    const dataRose = {
-      ...user,
-      password: "đã che ^^",
-      playerId: player?.playerId || null,
-      cName: player?.cName || null,
-      gender: player?.cgender || null,
-      head: player?.head || null,
-      avatar: idAvatar,
-    };
-    const dataNro = {
+    return {
       ...user,
       password: "đã che ^^",
       playerId: player?.id || null,
@@ -136,8 +97,6 @@ export async function getUserById(userId) {
       head: player?.head || null,
       avatar: idAvatar,
     };
-
-    return process.env.NEXT_PUBLIC_API_PREFIX == "rose" ? dataRose : dataNro;
   } catch (error) {
     console.error("Lỗi khi lấy thông tin user:", error);
     throw error;
