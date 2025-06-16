@@ -46,24 +46,15 @@ export async function updatePasswordById(newPassword, id) {
 export async function getUsernameOrEmail(username, email) {
   const sql = "SELECT username, email FROM account WHERE username = ? OR email = ?";
   const [existingUser] = await db.query(sql, [username, email]);
+  console.log('existingUser', existingUser)
   return existingUser;
 }
 
 export async function createUser(username, email, password) {
   const sql = "INSERT INTO account (username, email, password) VALUES (?, ?, ?)";
-  try {
-    const [result] = await db.query(sql, [username, email, password]);
-    // Verify the insert was successful
-    if (result.affectedRows === 1) {
-      // Wait a bit to ensure transaction is committed
-      await new Promise(resolve => setTimeout(resolve, 100));
-      return true;
-    }
-    return false;
-  } catch (error) {
-    console.error('Error creating user:', error);
-    throw error;
-  }
+
+  const [result] = await db.query(sql, [username, email, password]);
+  return result;
 }
 
 export async function getUserByUsernamePassword(username, password) {

@@ -26,19 +26,15 @@ export async function POST(request) {
     }
 
     // Kiểm tra username hoặc email đã tồn tại chưa
-    const existingUser = getUsernameOrEmail(username, email);
+    const existingUser = await getUsernameOrEmail(username, email);
 
-    if (existingUser.length > 0) {
-      if (existingUser.some((user) => user.username === username)) {
-        return NextResponse.json({ message: "Tên đăng nhập đã tồn tại." }, { status: 409 });
-      }
-      if (existingUser.some((user) => user.gmail === email)) {
-        return NextResponse.json({ message: "Email đã tồn tại." }, { status: 409 });
-      }
+    if (existingUser && existingUser.length > 0) {
+      return NextResponse.json({ message: "Tài khoản hoặc email hoặc đã tồn tại." }, { status: 409 });
     }
 
     // Lưu mật khẩu vào database mà không mã hóa
-    createUser(username, email, password);
+    const create = await createUser(username, email, password);
+    console.log("create", create);
 
     console.log(`Tài khoản ${username} đã được tạo thành công!`);
     return NextResponse.json({ message: `Tài khoản ${username} đăng ký thành công.` }, { status: 201 });
