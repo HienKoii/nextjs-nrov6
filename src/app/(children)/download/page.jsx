@@ -23,6 +23,7 @@ const downloadOptions = [
     btn: { label: "Tải file IPA", href: "/files/ngocronglau.ipa" },
     color: "gray.700",
     icon: StarIcon,
+    btn2: { label: "TestFlight (Beta)", href: "https://testflight.apple.com/join/GUpkGK2E" },
   },
   {
     title: "PC (Windows)",

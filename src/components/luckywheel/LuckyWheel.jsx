@@ -25,6 +25,17 @@ export default function LuckyWheel() {
   const toast = useToast();
 
   const spinFree = async () => {
+    if (true) {
+      toast({
+        title: "Bảo trì",
+        description: "Đang bảo  trì vui lòng quay lại sau.!",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+      return;
+    }
     // Kiểm tra user và token
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     if (!user || !token) {
@@ -86,6 +97,17 @@ export default function LuckyWheel() {
 
   const spinPaid = async () => {
     // Kiểm tra user và token
+    if (true) {
+      toast({
+        title: "Bảo trì",
+        description: "Đang bảo  trì vui lòng quay lại sau.!",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+      return;
+    }
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     if (!user || !token) {
       toast({
