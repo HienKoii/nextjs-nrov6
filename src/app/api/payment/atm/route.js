@@ -7,8 +7,9 @@ export async function POST(req) {
   try {
     const api = `https://api.sieuthicode.net/historyapivcbv2/${process.env.TOKEN_ATM}`;
     console.log('api', api)
-    const response = await axios.get(api);
-    console.log("response", response.data);
+    const response = await fetch(api);
+    const data = await response.json();
+    console.log("response", data);
 
     return NextResponse.json({ message: "Auto deposit" }, { status: 200 });
   } catch (error) {
