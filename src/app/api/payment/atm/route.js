@@ -6,8 +6,9 @@ import db from "@/config/db";
 export async function POST(req) {
   try {
     const api = `https://api.sieuthicode.net/historyapivcbv2/${process.env.TOKEN_ATM}`;
+    console.log('api', api)
     const response = await axios.get(api);
-    console.log("response", response);
+    console.log("response", response.data);
 
     return NextResponse.json({ message: "Auto deposit" }, { status: 200 });
   } catch (error) {
