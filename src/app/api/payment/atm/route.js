@@ -1,14 +1,17 @@
+// app/api/auto-deposit/route.ts
 import { NextResponse } from "next/server";
-import axios from "axios";
-import { updateAccountMoney } from "@/services/accountService";
-import db from "@/config/db";
 
 export async function POST(req) {
   try {
     const api = `https://api.sieuthicode.net/historyapivcbv2/${process.env.TOKEN_ATM}`;
     const response = await fetch(api);
+
+    if (!response.ok) {
+      throw new Error(`API lỗi: ${response.status}`);
+    }
+
     const data = await response.json();
-    console.log("response", data.transactions);
+    console.log("✅ Auto deposit data:", data.transactions);
 
     return NextResponse.json(data.transactions, { status: 200 });
   } catch (error) {
